@@ -1,0 +1,47 @@
+{
+  "private": "true",
+  "name": "cubu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "lerna": "lerna",
+    "clean": "lerna clean",
+    "test": "lerna run test",
+    "web:dev": "lerna run --parallel --scope @cubu/web dev",
+    "ios": "lerna run --parallel --scope @cubu/app ios",
+    "android": "lerna run --parallel --scope @cubu/app android",
+    "server:test": "lerna run --parallel --scope @cubu/server test",
+    "server:watch": "lerna run --parallel --scope @cubu/server watch",
+    "server": "lerna run --parallel --scope @cubu/server start",
+    "prepare": "husky install"
+  },
+  "eslintIgnore": [
+    "*.d.ts"
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.3.11",
+    "tailwindcss": "^2.2.19"
+  },
+  "devDependencies": {
+    "commitizen": "^4.2.4",
+    "cz-conventional-changelog": "3.3.0",
+    "devmoji": "^2.3.0",
+    "husky": "^7.0.0",
+    "lerna": "^4.0.0"
+  }
+}

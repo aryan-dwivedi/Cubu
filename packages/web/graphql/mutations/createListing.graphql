@@ -1,0 +1,25 @@
+mutation createListing(
+  $make: String!
+  $model: String!
+  $year: Int!
+  $price: Int!
+  $latitude: Float!
+  $longitude: Float!
+  $description: String!
+  $image: Upload!
+  $features: [String!]!
+) {
+  createListing(
+    input: {
+      make: $make
+      model: $model
+      year: $year
+      price: $price
+      latitude: $latitude
+      longitude: $longitude
+      description: $description
+      picture: $image
+      features: $features
+    }
+  )
+}

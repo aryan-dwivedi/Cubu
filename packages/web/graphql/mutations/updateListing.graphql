@@ -1,0 +1,27 @@
+mutation updateListing(
+  $listingId: String!
+  $make: String!
+  $model: String!
+  $year: Int!
+  $price: Int!
+  $latitude: Float!
+  $longitude: Float!
+  $description: String!
+  $image: Upload!
+  $features: [String!]!
+) {
+  updateListing(
+    listingId: $listingId
+    input: {
+      make: $make
+      model: $model
+      year: $year
+      price: $price
+      latitude: $latitude
+      longitude: $longitude
+      description: $description
+      picture: $image
+      features: $features
+    }
+  )
+}
