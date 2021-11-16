@@ -3,11 +3,18 @@ module.exports = {
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    theme: {
-      height: {
-        lg: '120px',
+    extend: {
+      height: theme => ({
+        "screen/2": "50vh",
+        "screen2/3": "calc((100vh / 3)*2.08)",
+        "screen/3": "calc(100vh / 3)",
+        "screen/4": "calc(100vh / 4)",
+        "screen/5": "calc(100vh / 5)",
+      }),
+      borderWidth: {
+        "1": "1px",
       }
-    }
+    },
   },
   variants: {
     extend: {}
