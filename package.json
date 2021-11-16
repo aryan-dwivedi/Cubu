@@ -21,8 +21,7 @@
     "android": "lerna run --parallel --scope @cubu/app android",
     "server:test": "lerna run --parallel --scope @cubu/server test",
     "server:watch": "lerna run --parallel --scope @cubu/server watch",
-    "server": "lerna run --parallel --scope @cubu/server start",
-    "prepare": "husky install"
+    "server": "lerna run --parallel --scope @cubu/server start"
   },
   "eslintIgnore": [
     "*.d.ts"
@@ -41,7 +40,6 @@
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "3.3.0",
     "devmoji": "^2.3.0",
-    "husky": "^7.0.0",
     "lerna": "^4.0.0"
   }
 }
