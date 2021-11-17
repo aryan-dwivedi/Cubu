@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { Me } from "../../graphql/queries/me.graphql";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
 import { PhotographIcon, CheckCircleIcon } from "@heroicons/react/outline";
@@ -11,6 +11,7 @@ import Dropzone from "react-dropzone";
 import PlacesAutocomplete from "react-places-autocomplete";
 import { createListing } from "../../graphql/mutations/createListing.graphql";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import Select from "react-select";
 
 function Search() {
   const router = useRouter();
@@ -18,10 +19,11 @@ function Search() {
   const [formStep, setFormStep] = useState(1);
   const [message, setMessage] = useState(null);
   const [newListing, { data, error, loading }] = useMutation(createListing);
-  const { register, handleSubmit } = useForm();
+  const { handleSubmit, control } = useForm();
   const [address, setAddress] = useState("");
   const [features, setFeatures] = useState([]);
   const [image, setImage] = useState(null);
+  const [buttonDisabled, setButtonDisabled] = useState(true);
 
   const [coordinates, setCoordinates] = useState({
     lat: 54.3535,
@@ -93,7 +95,7 @@ function Search() {
     } else if (formStep === 2) {
       return `What is make of your car?`;
     } else if (formStep === 3) {
-      return `{Let's get some details}`;
+      return `What is model of your car?`;
     } else if (formStep === 4) {
       return `{Let's get some details}`;
     } else if (formStep === 5) {
@@ -101,30 +103,102 @@ function Search() {
     }
   };
 
+  const aquaticCreatures = [
+    { label: "Shark", value: "Shark" },
+    { label: "Dolphin", value: "Dolphin" },
+    { label: "Whale", value: "Whale" },
+    { label: "Octopus", value: "Octopus" },
+    { label: "Crab", value: "Crab" },
+    { label: "Lobster", value: "Lobster" },
+  ];
+
+  const animal = [
+    { label: "Shvfvark", value: "Shvfvark" },
+    { label: "Shvfeevark", value: "Shvfeevark" },
+    { label: "Shvfvvvark", value: "Shvfvvvark" },
+    { label: "Shvfvarkkkk", value: "Shvfvarkkkk" },
+    { label: "Shvfvaaaaark", value: "Shvfvaaaaark" },
+    { label: "vvvfvvfv", value: "vvvfvvfv" },
+  ];
+
+  const customStyles = {
+    menu: () => ({
+      width: "300px",
+      borderRadius: "10px",
+      boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.25)",
+      backgroundColor: "#fff",
+      border: "1px solid #e5e5e5",
+      padding: "10px",
+      position: "absolute",
+    }),
+
+    control: () => ({
+      width: "300px",
+      border: "1.2px solid #000000",
+      borderRadius: "10px",
+      padding: "8px",
+      fontSize: "1.2rem",
+      color: "#000000",
+      display: "flex",
+      justifyContent: "space-between",
+    }),
+  };
+
   const renderForm = () => {
     if (formStep === 1) {
       return (
         <div>
-          <h1 className="sm:text-5xl text-2xl font-medium text-white text-center px-16">
+          <h1 className="sm:text-5xl text-2xl font-medium text-white text-center px-10">
             Become a Host in 10 easy steps
           </h1>
-          <h4 className="text-md font-extralight text-white text-center mt-5 px-8">
+          <h4 className="text-md font-extralight text-white text-center mt-5 px-5">
             Join us. We'll help you every step of the way.
           </h4>
         </div>
       );
     } else if (formStep === 2) {
       return (
-        <div className="-mt-60">
-          <select
-            name="make"
-            className={`w-72 sm:w-96 p-3 sm:p-4 drop-shadow-l border-1 focus:border-black border-gray-200 outline-none rounded-xl`}
-            id="make"
-            {...register("make")}
-          >
-            
-          </select>
-        </div>
+        <Controller
+          render={({ onChange, value }) => (
+            <Select
+              styles={customStyles}
+              id="make"
+              options={aquaticCreatures}
+              isMulti={false}
+              placeholder="Select make"
+              value={value}
+              onChange={() => {
+                onChange
+                setButtonDisabled(false);
+              }}
+            />
+          )}
+          control={control}
+          name="make"
+          rules={{ required: true }}
+        />
+      );
+    } else if (formStep === 3) {
+      return (
+        <Controller
+          render={({ onChange, value }) => (
+            <Select
+              styles={customStyles}
+              id="model"
+              options={animal}
+              isMulti={false}
+              placeholder="Select model"
+              value={value}
+              onChange={() => {
+                onChange
+                setButtonDisabled(false);
+              }}
+            />
+          )}
+          control={control}
+          name="model"
+          rules={{ required: true }}
+        />
       );
     }
   };
@@ -139,13 +213,13 @@ function Search() {
           <button
             type="button"
             onClick={() => setFormStep(formStep + 1)}
-            className="bg-indigo-600 text-white font-medium py-3 px-28 sm:px-5 rounded-md shadow-lg"
+            className="bg-indigo-600 text-white font-medium mb-2 py-3 px-24 sm:px-5 rounded-md shadow-lg"
           >
             Let's Go
           </button>
         </div>
       );
-    } else if (formStep <= 3) {
+    } else if (formStep <= 9) {
       return (
         <div
           className={`absolute flex justify-between  bottom-0 w-full sm:w-1/2 p-3 z-20`}
@@ -159,8 +233,11 @@ function Search() {
           </button>
           <button
             type="button"
-            onClick={() => setFormStep(formStep + 1)}
-            className={`bg-black py-3 px-8 text-sm text-white rounded border`}
+            onClick={() => setFormStep(formStep + 1) && setButtonDisabled(true)}
+            disabled={buttonDisabled}
+            className={`${
+              buttonDisabled ? "bg-gray-400" : "bg-black"
+            } py-3 px-8 text-sm text-white rounded-md border`}
           >
             Next
           </button>
@@ -202,11 +279,14 @@ function Search() {
           </h1>
         </div>
         <div
-          className={`flex flex-col w-full sm:w-1/2 -mt-5 sm:mt-0 h-screen2/3 sm:h-screen ${
+          className={`flex flex-col w-full sm:w-1/2 -mt-5 sm:mt-0 h-screen sm:h-screen ${
             formStep == 1 ? `bg-black` : `bg-white`
           } items-center justify-center sm:rounded-none rounded-t-3xl z-10`}
         >
-          {renderForm()}
+          <div className={`${formStep == 1 ? "-mt-96 sm:mt-0" : "-mt-96"}`}>
+            {renderForm()}
+          </div>
+
           {renderButton()}
         </div>
       </div>

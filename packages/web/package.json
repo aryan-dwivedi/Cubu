@@ -25,6 +25,7 @@
     "react-hook-form": "^7.19.1",
     "react-map-gl": "^6.1.17",
     "react-places-autocomplete": "^7.3.0",
+    "react-select": "^5.2.1",
     "tailwind-scrollbar-hide": "^1.0.3"
   },
   "devDependencies": {
