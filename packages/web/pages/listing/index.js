@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import { Me } from "../../graphql/queries/me.graphql";
 import { useForm, Controller } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { LocationMarkerIcon } from "@heroicons/react/solid";
@@ -12,23 +11,84 @@ import PlacesAutocomplete from "react-places-autocomplete";
 import { createListing } from "../../graphql/mutations/createListing.graphql";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
 import Select from "react-select";
+//Graphql Imports
+import { Me } from "../../graphql/queries/me.graphql";
+import { searchMake } from "../../graphql/queries/searchMake.graphql";
+import { searchModel } from "../../graphql/queries/searchModel.graphql";
 
 function Search() {
   const router = useRouter();
   const { loading: MeLoading, data: MeData } = useQuery(Me);
   const [formStep, setFormStep] = useState(1);
   const [message, setMessage] = useState(null);
-  const [newListing, { data, error, loading }] = useMutation(createListing);
   const { handleSubmit, control } = useForm();
   const [address, setAddress] = useState("");
   const [features, setFeatures] = useState([]);
   const [image, setImage] = useState(null);
   const [buttonDisabled, setButtonDisabled] = useState(true);
 
+  const [makeDataOptions, setMakeDataOptions] = useState([]);
+  const [modelDataOptions, setModelDataOptions] = useState([]);
+
+  //GraphQL
+  const { loading: MakeListingLoading, data: MakeListingData } =
+    useQuery(searchMake);
+  const {
+    loading: ModelListingLoading,
+    data: ModelListingData,
+    error: modelError,
+  } = useQuery(searchModel, {
+    variables: {
+      make: "Ford",
+    },
+  });
+
+useEffect(() => {
+  console.log(control)
+}, [control.make])
+
+  useEffect(() => {
+    console.log(ModelListingData + "Error: " + modelError);
+  }, [ModelListingData, modelError]);
+
+  const [newListing, { data, error, loading }] = useMutation(createListing);
+
   const [coordinates, setCoordinates] = useState({
     lat: 54.3535,
     lng: 65.3424,
   });
+
+  useEffect(() => {
+    if (formStep == 2) {
+      MakeListingLoading
+        ? setMakeDataOptions([
+            {
+              value: "",
+              label: "Loading...",
+            },
+          ])
+        : MakeListingData.searchMake.map((item) => {
+            setMakeDataOptions((result) => [
+              ...result,
+              { value: item, label: item },
+            ]);
+          });
+    } else if (formStep == 3) {
+      ModelListingLoading
+        ? setModelDataOptions([
+            {
+              value: "",
+              label: "Loading...",
+            },
+          ])
+        : ModelListingData.searchModel.map((item) => {
+            setModelDataOptions((result) => [
+              ...result,
+              { value: item, label: item },
+            ]);
+          });
+    }
+  }, [formStep, MakeListingData, ModelListingData]);
 
   const [viewport, setViewport] = useState({
     width: "100%",
@@ -103,25 +163,14 @@ function Search() {
     }
   };
 
-  const aquaticCreatures = [
-    { label: "Shark", value: "Shark" },
-    { label: "Dolphin", value: "Dolphin" },
-    { label: "Whale", value: "Whale" },
-    { label: "Octopus", value: "Octopus" },
-    { label: "Crab", value: "Crab" },
-    { label: "Lobster", value: "Lobster" },
-  ];
-
-  const animal = [
-    { label: "Shvfvark", value: "Shvfvark" },
-    { label: "Shvfeevark", value: "Shvfeevark" },
-    { label: "Shvfvvvark", value: "Shvfvvvark" },
-    { label: "Shvfvarkkkk", value: "Shvfvarkkkk" },
-    { label: "Shvfvaaaaark", value: "Shvfvaaaaark" },
-    { label: "vvvfvvfv", value: "vvvfvvfv" },
-  ];
-
   const customStyles = {
+    menuList: (styles) => {
+      return {
+        ...styles,
+        maxHeight: 215,
+      };
+    },
+
     menu: () => ({
       width: "300px",
       borderRadius: "10px",
@@ -130,6 +179,7 @@ function Search() {
       border: "1px solid #e5e5e5",
       padding: "10px",
       position: "absolute",
+      height: "230px",
     }),
 
     control: () => ({
@@ -163,12 +213,12 @@ function Search() {
             <Select
               styles={customStyles}
               id="make"
-              options={aquaticCreatures}
+              options={makeDataOptions}
               isMulti={false}
               placeholder="Select make"
               value={value}
               onChange={() => {
-                onChange
+                onChange;
                 setButtonDisabled(false);
               }}
             />
@@ -185,12 +235,12 @@ function Search() {
             <Select
               styles={customStyles}
               id="model"
-              options={animal}
+              options={modelDataOptions}
               isMulti={false}
               placeholder="Select model"
               value={value}
               onChange={() => {
-                onChange
+                onChange;
                 setButtonDisabled(false);
               }}
             />

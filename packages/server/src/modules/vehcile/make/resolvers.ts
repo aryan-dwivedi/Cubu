@@ -8,14 +8,14 @@ export const resolvers: ResolverMap = {
         searchMake: async (
             _,
         ) => {
-            let listingQB = getConnection()
+            const make = await getConnection()
                 .getRepository(Vehicle)
                 .createQueryBuilder("vehicle")
-                .select(`make`)
+                .select("make")
                 .distinct(true)
+                .getRawMany();
 
-            return listingQB
-                .getMany();
+            return make.map(m => m.make);
         }
     }
 };

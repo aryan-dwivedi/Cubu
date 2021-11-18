@@ -1,0 +1,3 @@
+query searchModel($make: String, $model: String) {
+  searchModel(make: $make, model: $model) 
+}

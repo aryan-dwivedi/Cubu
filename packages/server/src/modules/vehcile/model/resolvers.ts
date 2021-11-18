@@ -9,15 +9,15 @@ export const resolvers: ResolverMap = {
             _,
             { make }
         ) => {
-            let listingQB = getConnection()
+            const model = await getConnection()
                 .getRepository(Vehicle)
                 .createQueryBuilder("vehicle")
-                .select(`model`)
+                .select("model")
                 .where(`vehicle.make='${make}'`)
                 .distinct(true)
+                .getRawMany();
 
-            return listingQB
-                .getMany();
+            return model.map(m => m.model);
         }
     }
 };
