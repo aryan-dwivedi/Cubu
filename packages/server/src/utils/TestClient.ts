@@ -1,4 +1,4 @@
-import * as rp from "request-promise";
+import * as rp from 'request-promise';
 
 export class TestClient {
   url: string;
@@ -7,6 +7,7 @@ export class TestClient {
     withCredentials: boolean;
     json: boolean;
   };
+
   constructor(url: string) {
     this.url = url;
     this.options = {

@@ -9,31 +9,31 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 20,
-    margin: 10,
+    margin: 10
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 1,
-    borderColor: 'lightgrey',
+    borderColor: 'lightgrey'
   },
   iconContainer: {
     backgroundColor: '#e7e7e7',
     padding: 7,
     borderRadius: 10,
-    marginRight: 15,
+    marginRight: 15
   },
   searchContainer: {
     flexDirection: 'row',
     borderBottomColor: '#5465FF',
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   searchIcon: {
     paddingRight: 10
   },
   locationText: {
-    fontSize: 18,
+    fontSize: 18
   }
 });
 

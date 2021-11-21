@@ -1,28 +1,19 @@
 import argon2 from 'argon2';
-
-import { ResolverMap } from "../../../types/graphql-utils";
-import { User } from "../../../entities/User";
-import {
-  invalidLogin,
-  confirmEmailError,
-  forgotPasswordLockedError
-} from "./errorMessages";
-import { USER_SESSION_PREFIX } from "../../../constants";
+import { USER_SESSION_PREFIX } from '../../../constants';
+import { User } from '../../../entities/User';
+import { ResolverMap } from '../../../types/graphql-utils';
+import { confirmEmailError, forgotPasswordLockedError, invalidLogin } from './errorMessages';
 
 const errorResponse = [
   {
-    path: "email",
+    path: 'email',
     message: invalidLogin
   }
 ];
 
 export const resolvers: ResolverMap = {
   Mutation: {
-    login: async (
-      _,
-      { email, password },
-      { session, redis, req }
-    ) => {
+    login: async (_, { email, password }, { session, redis, req }) => {
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
@@ -33,7 +24,7 @@ export const resolvers: ResolverMap = {
         return {
           errors: [
             {
-              path: "email",
+              path: 'email',
               message: confirmEmailError
             }
           ]
@@ -44,7 +35,7 @@ export const resolvers: ResolverMap = {
         return {
           errors: [
             {
-              path: "email",
+              path: 'email',
               message: forgotPasswordLockedError
             }
           ]
@@ -56,7 +47,8 @@ export const resolvers: ResolverMap = {
       if (!valid) {
         return { errors: errorResponse };
       }
-      
+
+      // eslint-disable-next-line no-param-reassign
       session.userId = user.id;
 
       if (req.sessionID) {

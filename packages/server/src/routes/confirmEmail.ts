@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import { User } from "../entities/User";
-import Redis from "ioredis";
-const path = require('path');
+import { Request, Response } from 'express';
+import Redis from 'ioredis';
+import path from 'path';
+import { User } from '../entities/User';
 
 export const confirmEmail = async (req: Request, res: Response) => {
   const { id } = req.params;

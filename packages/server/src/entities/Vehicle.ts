@@ -1,20 +1,15 @@
-import {
-    Entity,
-    Column,
-    BaseEntity,
-    PrimaryGeneratedColumn,
-} from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity("vehicle")
+@Entity('vehicle')
 export class Vehicle extends BaseEntity {
-    @PrimaryGeneratedColumn("uuid") id: string;
+  @PrimaryGeneratedColumn('uuid') id: string;
 
-    @Column("varchar", { length: 100 })
-    make: string;
+  @Column('varchar', { length: 100 })
+  make: string;
 
-    @Column("varchar", { length: 100 })
-    model: string;
+  @Column('varchar', { length: 100 })
+  model: string;
 
-    @Column("int")
-    year: number;
+  @Column('int')
+  year: number;
 }

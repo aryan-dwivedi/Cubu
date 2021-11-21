@@ -1,14 +1,14 @@
-import React from 'react'
+import React from 'react';
 import { View } from 'react-native';
-import styles from './styles'
-import NoResults from '../../components/Saved/NoResults'
+import NoResults from '../../components/Saved/NoResults';
+import styles from './styles';
 
 const Saved = () => {
-    return (
-        <View style={styles.wrapper}>
-            <NoResults />
-        </View>
-    )
-}
+  return (
+    <View style={styles.wrapper}>
+      <NoResults />
+    </View>
+  );
+};
 
-export default Saved
+export default Saved;

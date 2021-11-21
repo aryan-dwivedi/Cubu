@@ -1,9 +1,8 @@
-import { Connection } from "typeorm";
-import faker from "faker";
-
-import { User } from "../entities/User";
-import { TestClient } from "../utils/TestClient";
-import { createTestConn } from "./createTestConn";
+import faker from 'faker';
+import { Connection } from 'typeorm';
+import { User } from '../entities/User';
+import { TestClient } from '../utils/TestClient';
+import { createTestConn } from './createTestConn';
 
 let userId: string;
 let conn: Connection;
@@ -22,17 +21,17 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  conn.close();
+  void conn.close();
 });
 
-describe("me", () => {
-  test("return null if no cookie", async () => {
+describe('me', () => {
+  test('return null if no cookie', async () => {
     const client = new TestClient(process.env.TEST_HOST as string);
     const response = await client.me();
     expect(response.data.me).toBeNull();
   });
 
-  test("get current user", async () => {
+  test('get current user', async () => {
     const client = new TestClient(process.env.TEST_HOST as string);
     await client.login(email, password);
     const response = await client.me();

@@ -1,31 +1,18 @@
-import React, { useRef } from "react";
-import {
-  SafeAreaView,
-  Text,
-  Image,
-  View,
-  StatusBar,
-  ScrollView,
-  Dimensions,
-  Pressable,
-} from "react-native";
-import styles from "./styles";
-import reviews from "../../../assets/data/feed";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import Feather from "react-native-vector-icons/Feather";
-import Entypo from "react-native-vector-icons/Entypo";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { FlatList } from "react-native-gesture-handler";
-import Reviews from "../Reviews";
-import FixedBottom from "../FixedBottom";
+import React, { useRef } from 'react';
+import { Dimensions, Image, Pressable, SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import reviews from '../../../assets/data/feed';
+import FixedBottom from '../FixedBottom';
+import Reviews from '../Reviews';
+import styles from './styles';
 
-const DetailedPost = (props) => {
+const DetailedPost = props => {
   const post = props.post;
   const flatlist = useRef();
-  console.log(post);
   const images = post.pictureUrl;
-  const { width } = Dimensions.get("window");
+  const { width } = Dimensions.get('window');
   const height = width * 0.6;
 
   return (
@@ -33,18 +20,13 @@ const DetailedPost = (props) => {
       <StatusBar barStyle="dark-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-          <ScrollView
-            pagingEnabled
-            horizontal
-            style={{ width, height }}
-            showsHorizontalScrollIndicator={false}
-          >
+          <ScrollView pagingEnabled horizontal style={{ width, height }} showsHorizontalScrollIndicator={false}>
             {/* {images.map((image, index) => ( */}
             <Image
               // key={index}
               style={styles.image}
               source={{
-                uri: images,
+                uri: images
               }}
             />
             {/* ))} */}
@@ -66,24 +48,24 @@ const DetailedPost = (props) => {
           </Text>
           <Text style={styles.rating}>
             {post.rating} {}
-            <Fontisto name="star" size={18} color={"#5465FF"}></Fontisto>
+            <Fontisto name="star" size={18} color={'#5465FF'} />
             <Text style={styles.trips}>
               <Text>&nbsp;</Text> ({post.trips} trips)
             </Text>
           </Text>
         </View>
-        <View style={styles.line}></View>
+        <View style={styles.line} />
         {/*  Trip Dates */}
 
         <View style={styles.details}>
           <Text style={styles.heading}>Location</Text>
           <Text style={styles.location}>
-            <Entypo name="location-pin" size={25} color={"#5465FF"}></Entypo>
+            <Entypo name="location-pin" size={25} color={'#5465FF'} />
             <Text>&nbsp;</Text>
             Kanpur
           </Text>
         </View>
-        <View style={styles.line}></View>
+        <View style={styles.line} />
 
         {/*  Features */}
         {/* <View style={styles.details}>
@@ -124,8 +106,9 @@ const DetailedPost = (props) => {
             </View>
           </View>
         </View> */}
-        <View style={styles.line}></View>
-        {/* 
+        <View style={styles.line} />
+
+        {/*
         <View style={styles.details}>
           <Text style={styles.heading}>Features</Text>
           <View style={styles.features}>
@@ -245,14 +228,14 @@ const DetailedPost = (props) => {
             </View>
           </View>
         </View> */}
-        <View style={styles.line}></View>
+        <View style={styles.line} />
 
         {/*  Description */}
         <View style={styles.details}>
           <Text style={styles.heading}>Description</Text>
           <Text style={styles.descriptiontext}>{post.description}</Text>
         </View>
-        <View style={styles.line}></View>
+        <View style={styles.line} />
 
         {/* Rating & Reviews */}
         <View style={styles.details}>
@@ -265,12 +248,12 @@ const DetailedPost = (props) => {
               horizontal
               showsHorizontalScrollIndicator={false}
               snapToInterval={width - 60}
-              snapToAlignment={"center"}
-              decelerationRate={"fast"}
+              snapToAlignment={'center'}
+              decelerationRate={'fast'}
             />
           </View>
         </View>
-        <View style={styles.line}></View>
+        <View style={styles.line} />
 
         {/*  Hosted By */}
         {/* <View style={styles.details}>

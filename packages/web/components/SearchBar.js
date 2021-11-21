@@ -1,20 +1,15 @@
-import React from "react";
-import {
-  LocationMarkerIcon,
-  MenuIcon,
-  SearchIcon,
-  UserCircleIcon,
-} from "@heroicons/react/solid";
-import PlacesAutocomplete from "react-places-autocomplete";
-import { useState } from "react";
+/* eslint-disable no-undef */
+import { LocationMarkerIcon, SearchIcon } from '@heroicons/react/solid';
+import React, { useState } from 'react';
+import PlacesAutocomplete from 'react-places-autocomplete';
 export default function SearchBar() {
-  const [address, setAddress] = useState("");
+  const [address, setAddress] = useState('');
   const [coordinates, setCoordinates] = useState({
     lat: null,
-    lng: null,
+    lng: null
   });
 
-  const handleSelect = async (value) => {
+  const handleSelect = async value => {
     const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
     setAddress(value);
@@ -23,46 +18,34 @@ export default function SearchBar() {
 
   const search = () => {
     router.push({
-      pathname: "/search",
+      pathname: '/search',
       query: {
         lat: coordinates.lat,
-        lng: coordinates.lng,
-      },
+        lng: coordinates.lng
+      }
     });
   };
 
   return (
     <div className="flex items-center md:border-2 rounded-full py-2 md:shadow-sm">
-      <PlacesAutocomplete
-        value={address}
-        onChange={setAddress}
-        onSelect={handleSelect}
-      >
+      <PlacesAutocomplete value={address} onChange={setAddress} onSelect={handleSelect}>
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div className="w-full">
             <input
-              {...getInputProps({ placeholder: "Where are you going?" })}
+              {...getInputProps({ placeholder: 'Where are you going?' })}
               className="flex-grow pl-5 pr-100 w-full bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400"
             />
             <div className="absolute mt-5">
               {loading ? <div>...loading</div> : null}
-              {suggestions.map((suggestion) => {
+              {suggestions.map(suggestion => {
                 const style = {
-                  backgroundColor: suggestion.active ? "#5465FF" : "#fff",
+                  backgroundColor: suggestion.active ? '#5465FF' : '#fff'
                 };
 
                 return (
-                  <button
-                    {...getSuggestionItemProps(suggestion, { style })}
-                    key={suggestion}
-                    onClick={search}
-                  >
+                  <button {...getSuggestionItemProps(suggestion, { style })} key={suggestion} onClick={search}>
                     <div>
-                      <LocationMarkerIcon
-                        width={30}
-                        height={30}
-                        color={"#5465FF"}
-                      />
+                      <LocationMarkerIcon width={30} height={30} color={'#5465FF'} />
                     </div>
                     <p>{suggestion.description}</p>
                   </button>

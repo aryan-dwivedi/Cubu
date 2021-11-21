@@ -1,12 +1,12 @@
-import React from 'react'
-import { View, Text } from 'react-native'
+import React from 'react';
+import { Text, View } from 'react-native';
 
 const Vehicle = () => {
-    return (
-       <View>
-           <Text>Hello</Text>
-       </View>
-    )
-}
+  return (
+    <View>
+      <Text>Hello</Text>
+    </View>
+  );
+};
 
-export default Vehicle
+export default Vehicle;

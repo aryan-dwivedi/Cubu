@@ -1,9 +1,8 @@
-import faker from "faker";
-import { Connection } from "typeorm";
-
-import { User } from "../entities/User";
-import { TestClient } from "../utils/TestClient";
-import { createTestConn } from "./createTestConn";
+import faker from 'faker';
+import { Connection } from 'typeorm';
+import { User } from '../entities/User';
+import { TestClient } from '../utils/TestClient';
+import { createTestConn } from './createTestConn';
 
 let conn: Connection;
 faker.seed(Date.now() + 2);
@@ -22,11 +21,11 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  conn.close();
+  void conn.close();
 });
 
-describe("logout", () => {
-  test("multiple sessions", async () => {
+describe('logout', () => {
+  test('multiple sessions', async () => {
     // computer 1
     const sess1 = new TestClient(process.env.TEST_HOST as string);
     // computer 2
@@ -39,7 +38,7 @@ describe("logout", () => {
     expect(await sess1.me()).toEqual(await sess2.me());
   });
 
-  test("single session", async () => {
+  test('single session', async () => {
     const client = new TestClient(process.env.TEST_HOST as string);
 
     await client.login(email, password);

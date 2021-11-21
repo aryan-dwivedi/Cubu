@@ -1,55 +1,40 @@
 import argon2 from 'argon2';
-import { changePasswordSchema } from "../../../utils/userValidator";
-
-import { ResolverMap } from "../../../types/graphql-utils";
-import { createForgotPasswordLink } from "../../../utils/createForgotPasswordLink";
-import { User } from "../../../entities/User";
-import { expiredKeyError, mailSent, userNotFoundError } from "./errorMessages";
-import { FORGET_PASSWORD_PREFIX } from "../../../constants";
-import { formatYupError } from "../../../utils/formatYupError";
-import { sendEmail } from "../../../utils/sendEmail";
+import { FORGET_PASSWORD_PREFIX } from '../../../constants';
+import { User } from '../../../entities/User';
+import { ResolverMap } from '../../../types/graphql-utils';
+import { createForgotPasswordLink } from '../../../utils/createForgotPasswordLink';
+import { formatYupError } from '../../../utils/formatYupError';
+import { sendEmail } from '../../../utils/sendEmail';
+import { changePasswordSchema } from '../../../utils/userValidator';
+import { expiredKeyError, mailSent, userNotFoundError } from './errorMessages';
 
 export const resolvers: ResolverMap = {
   Mutation: {
-    sendForgotPasswordEmail: async (
-      _,
-      { email },
-      { redis }
-    ) => {
+    sendForgotPasswordEmail: async (_, { email }, { redis }) => {
       const user = await User.findOne({ where: { email } });
       if (!user) {
         return userNotFoundError;
       }
-      const url = await createForgotPasswordLink(
-        process.env.FRONTEND_HOST as string,
-        user.id,
-        redis
-      );
-      await sendEmail(email, url, "Reset Password");
+      const url = await createForgotPasswordLink(process.env.FRONTEND_HOST as string, user.id, redis);
+      await sendEmail(email, url, 'Reset Password');
       return mailSent;
     },
-    forgotPasswordChange: async (
-      _,
-      { newPassword, key },
-      { redis }
-    ) => {
+    forgotPasswordChange: async (_, { newPassword, key }, { redis }) => {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       const redisKey = `${FORGET_PASSWORD_PREFIX}${key}`;
 
       const userId = await redis.get(redisKey);
       if (!userId) {
         return [
           {
-            path: "newPassword",
+            path: 'newPassword',
             message: expiredKeyError
           }
         ];
       }
 
       try {
-        await changePasswordSchema.validate(
-          { newPassword },
-          { abortEarly: false }
-        );
+        await changePasswordSchema.validate({ newPassword }, { abortEarly: false });
       } catch (err) {
         return formatYupError(err);
       }

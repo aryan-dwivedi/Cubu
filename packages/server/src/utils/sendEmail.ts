@@ -1,24 +1,20 @@
-import * as nodemailer from "nodemailer";
-require("dotenv-safe").config();
+/* eslint-disable no-console */
+import * as nodemailer from 'nodemailer';
 
-export const sendEmail = async (
-  recipient: string,
-  url: string,
-  linkText: string
-) => {
-  var transporter = nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
+export const sendEmail = async (recipient: string, url: string, linkText: string) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.mailtrap.io',
     port: 2525,
     auth: {
-      user: "1573dcc9912d13",
-      pass: "aed702a0ed0076"
+      user: '1573dcc9912d13',
+      pass: 'aed702a0ed0076'
     }
   });
   const message = {
-    from: "Sender Name <sender@example.com>",
+    from: 'Sender Name <sender@example.com>',
     to: `Recipient <${recipient}>`,
     subject: `${linkText}`,
-    text: "Hello to myself!",
+    text: 'Hello to myself!',
     html: `<html>
       <head>
       
@@ -224,14 +220,14 @@ export const sendEmail = async (
         </table>
         <!-- end body -->
       
-      </body>`, // plaintext body
+      </body>` // plaintext body
   };
 
   transporter.sendMail(message, (err, info) => {
     if (err) {
-      console.log("Error occurred. " + err.message);
+      console.log('Error occurred. ' + err.message);
     }
     console.log(linkText, recipient, url);
-    console.log("Message sent: %s", info.messageId);
+    console.log('Message sent: %s', info.messageId);
   });
 };

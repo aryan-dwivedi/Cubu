@@ -1,76 +1,75 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import React, { useEffect } from "react";
-import { View } from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import CommingSoon from "../screens/CommingSoon";
-import DestinationSearchScreen from "../screens/DestinationSearch";
-import TabScreen from "../screens/HostSettings/TabScreen";
-import HowItWorks from "../screens/HowItWorks";
-import NewPost from "../screens/NewPost";
-import PostScreen from "../screens/PostScreen";
-import SearchResultsScreen from "../screens/SearchResults";
-import SearchResultsMap from "../screens/SearchResultsMap";
-import { AuthContext } from "./Context";
-import HomeTabNavigator from "./HomeTabNavigatior";
-import RootStackScreen from "./RootStackScreen";
-import * as SecureStore from "expo-secure-store";
-import LottieView from "lottie-react-native";
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-console */
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import * as SecureStore from 'expo-secure-store';
+import LottieView from 'lottie-react-native';
+import React, { useEffect } from 'react';
+import { View } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import CommingSoon from '../screens/CommingSoon';
+import DestinationSearchScreen from '../screens/DestinationSearch';
+import TabScreen from '../screens/HostSettings/TabScreen';
+import HowItWorks from '../screens/HowItWorks';
+import NewPost from '../screens/NewPost';
+import PostScreen from '../screens/PostScreen';
+import SearchResultsScreen from '../screens/SearchResults';
+import SearchResultsMap from '../screens/SearchResultsMap';
+import { AuthContext } from './Context';
+import HomeTabNavigator from './HomeTabNavigatior';
+import RootStackScreen from './RootStackScreen';
 
 const Stack = createStackNavigator();
 
-const Navigator = (props) => {
+const Navigator = () => {
   const initialLoginState = {
     userToken: null,
-    isLoading: true,
+    isLoading: true
   };
 
   const loginReducer = (prevState, action) => {
     switch (action.type) {
-      case "RETRIEVE_TOKEN":
+      case 'RETRIEVE_TOKEN':
         return {
           ...prevState,
           userToken: action.token,
-          isLoading: false,
+          isLoading: false
         };
-      case "LOGIN":
+      case 'LOGIN':
         return {
           ...prevState,
           userToken: action.token,
-          isLoading: false,
+          isLoading: false
         };
-      case "LOGOUT":
+      case 'LOGOUT':
         return {
           ...prevState,
           userToken: null,
-          isLoading: false,
+          isLoading: false
         };
     }
   };
-  const [loginState, dispatch] = React.useReducer(
-    loginReducer,
-    initialLoginState
-  );
+  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
   const authContext = React.useMemo(
     () => ({
-      signIn: async (user) => {
+      signIn: async user => {
         const userToken = String(user.sessionId);
         try {
-          await SecureStore.setItemAsync("userToken", userToken);
+          await SecureStore.setItemAsync('userToken', userToken);
         } catch (e) {
           console.log(e);
         }
-        dispatch({ type: "LOGIN", token: userToken });
+        dispatch({ type: 'LOGIN', token: userToken });
       },
       signOut: async () => {
         try {
-          await SecureStore.deleteItemAsync("userToken");
+          await SecureStore.deleteItemAsync('userToken');
         } catch (e) {
           console.log(e);
         }
-        dispatch({ type: "LOGOUT" });
-      },
+        dispatch({ type: 'LOGOUT' });
+      }
     }),
     []
   );
@@ -80,22 +79,18 @@ const Navigator = (props) => {
       let userToken;
       userToken = null;
       try {
-        userToken = await SecureStore.getItemAsync("userToken");
+        userToken = await SecureStore.getItemAsync('userToken');
       } catch (e) {
         console.log(e);
       }
-      dispatch({ type: "RETRIEVE_TOKEN", token: userToken });
+      dispatch({ type: 'RETRIEVE_TOKEN', token: userToken });
     }, 1000);
   }, []);
 
   if (loginState.isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <LottieView
-          source={require("../../assets/53192-car-animated.json")}
-          autoPlay
-          loop
-        />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <LottieView source={require('../../assets/53192-car-animated.json')} autoPlay loop />
       </View>
     );
   }
@@ -106,170 +101,130 @@ const Navigator = (props) => {
         {loginState.userToken !== null ? (
           <Stack.Navigator>
             <Stack.Screen
-              name={"Home"}
+              name={'Home'}
               component={HomeTabNavigator}
               options={{
-                headerShown: false,
+                headerShown: false
               }}
             />
 
             <Stack.Screen
-              name={"Destination Search"}
+              name={'Destination Search'}
               component={DestinationSearchScreen}
               options={{
-                title: "Search your destination",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: 'Search your destination',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="keyboard-backspace"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="keyboard-backspace" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
 
             <Stack.Screen
-              name={"Search Result"}
+              name={'Search Result'}
               component={SearchResultsScreen}
               options={{
-                title: "Select your car",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: 'Select your car',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="keyboard-backspace"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="keyboard-backspace" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
 
             <Stack.Screen
-              name={"Search Result Map"}
+              name={'Search Result Map'}
               component={SearchResultsMap}
               options={{
-                title: "Select your car",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: 'Select your car',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="keyboard-backspace"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="keyboard-backspace" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
 
             <Stack.Screen
-              name={"Post"}
+              name={'Post'}
               component={PostScreen}
               options={{
-                title: "Select your car",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: 'Select your car',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="keyboard-backspace"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="keyboard-backspace" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
 
             <Stack.Screen
-              name={"New Post"}
+              name={'New Post'}
               component={NewPost}
               options={{
-                title: "",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: '',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="close"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="close" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
 
             <Stack.Screen
-              name={"HowItWorks"}
+              name={'HowItWorks'}
               component={HowItWorks}
               options={{
-                title: "How it works?",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: 'How it works?',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="keyboard-backspace"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="keyboard-backspace" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
 
             <Stack.Screen
-              name={"Comming Soon"}
+              name={'Comming Soon'}
               component={CommingSoon}
               options={{
-                title: "Experiances",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: 'Experiances',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="keyboard-backspace"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="keyboard-backspace" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
 
             <Stack.Screen
-              name={"Host Settings"}
+              name={'Host Settings'}
               component={TabScreen}
               options={{
-                title: "Settings",
-                headerBackTitle: "",
-                headerTruncatedBackTitle: "",
+                title: 'Settings',
+                headerBackTitle: '',
+                headerTruncatedBackTitle: '',
                 headerBackImage: () => (
                   <View>
-                    <MaterialIcons
-                      name="keyboard-backspace"
-                      size={30}
-                      style={{ marginLeft: 10 }}
-                      color={"#282C35"}
-                    />
+                    <MaterialIcons name="keyboard-backspace" size={30} style={{ marginLeft: 10 }} color={'#282C35'} />
                   </View>
-                ),
+                )
               }}
             />
           </Stack.Navigator>

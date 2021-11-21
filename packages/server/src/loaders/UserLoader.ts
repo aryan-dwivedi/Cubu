@@ -1,10 +1,10 @@
-import DataLoader = require("dataloader");
-import { User } from "../entities/User";
+import DataLoader = require('dataloader');
+import { User } from '../entities/User';
 
 type BatchUser = (ids: string[]) => Promise<User[]>;
 
 const batchUsers: BatchUser = async ids => {
-  const users = await User.findByIds(ids); //SQL to get all users
+  const users = await User.findByIds(ids); // SQL to get all users
 
   const userMap: { [key: string]: User } = {};
   users.forEach(user => {

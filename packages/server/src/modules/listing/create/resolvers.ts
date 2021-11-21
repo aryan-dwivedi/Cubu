@@ -1,7 +1,7 @@
-import { ResolverMap } from "../../../types/graphql-utils";
-import { Listing } from "../../../entities/Listing";
-import { processUpload } from "../../shared/processUpload";
-import { LISTING_CACHE_KEY } from "../../../constants";
+import { LISTING_CACHE_KEY } from '../../../constants';
+import { Listing } from '../../../entities/Listing';
+import { ResolverMap } from '../../../types/graphql-utils';
+import { processUpload } from '../../shared/processUpload';
 
 export const resolvers: ResolverMap = {
   Mutation: {
@@ -12,11 +12,11 @@ export const resolvers: ResolverMap = {
         ...data,
         pictureUrl,
         userId: session.userId
-      })
+      });
 
       await listing.save();
 
-      redis.lpush(LISTING_CACHE_KEY, JSON.stringify(listing));
+      void redis.lpush(LISTING_CACHE_KEY, JSON.stringify(listing));
 
       return true;
     }

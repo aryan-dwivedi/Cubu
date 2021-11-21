@@ -1,28 +1,22 @@
-import React from "react";
-import { View, Text } from "react-native";
-import { Marker } from "react-native-maps";
+/* eslint-disable react-native/no-inline-styles */
+import React from 'react';
+import { Text, View } from 'react-native';
+import { Marker } from 'react-native-maps';
 
-const CustomMarker = (props) => {
+const CustomMarker = props => {
   const { latitude, longitude, price, onPress, isSelected } = props;
   return (
-    <Marker
-      coordinate={{ latitude: latitude, longitude: longitude }}
-      onPress={onPress}
-    >
+    <Marker coordinate={{ latitude: latitude, longitude: longitude }} onPress={onPress}>
       <View
         style={{
-          backgroundColor: isSelected ? "black" : "white",
+          backgroundColor: isSelected ? 'black' : 'white',
           padding: 5,
           borderRadius: 20,
-          borderColor: "grey",
-          borderWidth: 1,
+          borderColor: 'grey',
+          borderWidth: 1
         }}
       >
-        <Text
-          style={{ fontWeight: "bold", color: isSelected ? "white" : "black" }}
-        >
-          ₹{price}
-        </Text>
+        <Text style={{ fontWeight: 'bold', color: isSelected ? 'white' : 'black' }}>₹{price}</Text>
       </View>
     </Marker>
   );

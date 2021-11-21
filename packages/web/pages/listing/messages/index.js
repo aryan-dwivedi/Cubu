@@ -1,7 +1,3 @@
 export default function Messages() {
-    return (
-        <div>
-            Messages
-        </div>
-    )
+  return <div>Messages</div>;
 }

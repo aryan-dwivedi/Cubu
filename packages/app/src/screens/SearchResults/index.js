@@ -1,31 +1,14 @@
-import React from "react";
-import {
-  View,
-  FlatList,
-  Pressable,
-  Text,
-  ActivityIndicator,
-} from "react-native";
-import Post from "../../components/Post";
-import styles from "./styles";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useNavigation } from "@react-navigation/native";
-import { gql, useQuery } from "@apollo/client";
-import { useRoute } from "@react-navigation/native";
+import { gql, useQuery } from '@apollo/client';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import React from 'react';
+import { ActivityIndicator, FlatList, Pressable, Text, View } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Post from '../../components/Post';
+import styles from './styles';
 
 const QUERY = gql`
-  query searchListings(
-    $latitude: Float
-    $longitude: Float
-    $offset: Int!
-    $limit: Int!
-  ) {
-    searchListings(
-      latitude: $latitude
-      longitude: $longitude
-      offset: $offset
-      limit: $limit
-    ) {
+  query searchListings($latitude: Float, $longitude: Float, $offset: Int!, $limit: Int!) {
+    searchListings(latitude: $latitude, longitude: $longitude, offset: $offset, limit: $limit) {
       id
       make
       model
@@ -44,7 +27,7 @@ const QUERY = gql`
   }
 `;
 
-const SearchResultsScreen = (props) => {
+const SearchResultsScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
@@ -53,8 +36,8 @@ const SearchResultsScreen = (props) => {
       latitude: route.params.latitude,
       longitude: route.params.longitude,
       offset: 0,
-      limit: 10,
-    },
+      limit: 10
+    }
   });
 
   return (
@@ -62,22 +45,19 @@ const SearchResultsScreen = (props) => {
       {loading ? (
         <ActivityIndicator size="large" color="#0000ff" />
       ) : (
-        <FlatList
-          data={data.searchListings}
-          renderItem={({ item }) => <Post post={item} />}
-        />
+        <FlatList data={data.searchListings} renderItem={({ item }) => <Post post={item} />} />
       )}
       <View style={styles.button}>
         <Pressable
           style={styles.buttonMap}
           onPress={() =>
-            navigation.navigate("Search Result Map", {
+            navigation.navigate('Search Result Map', {
               latitude: route.params.latitude,
-              longitude: route.params.longitude,
+              longitude: route.params.longitude
             })
           }
         >
-          <FontAwesome name="map-o" size={20} color={"white"}></FontAwesome>
+          <FontAwesome name="map-o" size={20} color={'white'} />
           <Text style={styles.buttonText}>Map View</Text>
         </Pressable>
       </View>

@@ -6,7 +6,7 @@ function ListCard({ make, model, description, year, price, pictureUrl }) {
     <div className="flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg treansition duration-200 ease-out first: border-t">
       {pictureUrl != null && (
         <div className="relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0">
-          <Image className="rounded-2xl" layout="fill" objectFit="cover" src={pictureUrl} />
+          <Image className="rounded-2xl" layout="fill" objectFit="cover" alt="Cover Image" src={pictureUrl} />
         </div>
       )}
       <div className="flex flex-col flex-grow pl-5">
@@ -34,4 +34,4 @@ function ListCard({ make, model, description, year, price, pictureUrl }) {
   );
 }
 
-export default InfoCard;
+export default ListCard;

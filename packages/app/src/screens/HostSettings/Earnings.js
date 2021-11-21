@@ -1,6 +1,6 @@
-import React from 'react';
-import { BarChart, Grid, XAxis, YAxis } from 'react-native-svg-charts';
 import * as scale from 'd3-scale';
+import React from 'react';
+import { BarChart, Grid, XAxis } from 'react-native-svg-charts';
 
 const Earnings = () => {
   const data = [
@@ -15,48 +15,50 @@ const Earnings = () => {
     { label: 'SEP', value: 2300 },
     { label: 'OCT', value: 1000 },
     { label: 'NOV', value: 900 },
-    { label: 'DEC', value: 2000 },
+    { label: 'DEC', value: 2000 }
   ];
 
   const barData = [
     {
       data: data,
       svg: {
-        fill: 'rgba(134, 65, 244,0.8)',
-      },
-    },
+        fill: 'rgba(134, 65, 244,0.8)'
+      }
+    }
   ];
 
   return (
-    <>        
-        <BarChart
-          style={{ height: 300, marginTop: 20, marginHorizontal: 10 }}
-          data={barData}
-          yAccessor={({ item }) => item.value}
-          formatLabel={(item) => item}
-          contentInset={{ top: 10, bottom: 10 }}
-          yMin={0}
-          yMax={5000}
-          spacingInner={0.1}
-          spacingOuter={0.1}
-          {...this.props}>
-          <Grid />
-        </BarChart>
-        <XAxis
-          data={barData}
-          svg={{
-            fill: 'black',
-            fontSize: 12,
-            fontWeight: 'bold',
-          }}
-          xAccessor={({ item }) => item}
-          formatLabel={(item, index) => item.data[index].label}
-          scale={scale.scaleBand}
-          spacingInner={0.1}
-          spacingOuter={0.1}
-          contentInset={{ left: 80, right: 80 }}
-        />
-      </>
+    <>
+      <BarChart
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{ height: 300, marginTop: 20, marginHorizontal: 10 }}
+        data={barData}
+        yAccessor={({ item }) => item.value}
+        formatLabel={item => item}
+        contentInset={{ top: 10, bottom: 10 }}
+        yMin={0}
+        yMax={5000}
+        spacingInner={0.1}
+        spacingOuter={0.1}
+        {...this.props}
+      >
+        <Grid />
+      </BarChart>
+      <XAxis
+        data={barData}
+        svg={{
+          fill: 'black',
+          fontSize: 12,
+          fontWeight: 'bold'
+        }}
+        xAccessor={({ item }) => item}
+        formatLabel={(item, index) => item.data[index].label}
+        scale={scale.scaleBand}
+        spacingInner={0.1}
+        spacingOuter={0.1}
+        contentInset={{ left: 80, right: 80 }}
+      />
+    </>
   );
 };
 

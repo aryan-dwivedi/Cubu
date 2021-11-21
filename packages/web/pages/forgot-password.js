@@ -10,8 +10,8 @@ export default function LoginPage() {
   const [reset, { data, error, loading }] = useMutation(sendForgotPasswordEmail);
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = async data => {
-    reset({ variables: data });
+  const onSubmit = async vars => {
+    reset({ variables: vars });
   };
 
   useEffect(() => {
@@ -35,7 +35,7 @@ export default function LoginPage() {
               <input
                 type="text"
                 name="email"
-                className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                className={'w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4'}
                 id="email"
                 placeholder="Email"
                 autoComplete="off"
@@ -47,14 +47,18 @@ export default function LoginPage() {
             <div className="flex justify-center items-center mt-6">
               {loading ? (
                 <button
-                  className={`bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700`}
+                  className={
+                    'bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700'
+                  }
                 >
                   Loading...
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className={`flex bg-indigo-500 py-2 px-10 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700`}
+                  className={
+                    'flex bg-indigo-500 py-2 px-10 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700'
+                  }
                 >
                   Send Password Reset Link
                 </button>

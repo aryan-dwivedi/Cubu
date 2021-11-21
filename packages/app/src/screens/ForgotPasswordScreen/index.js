@@ -1,19 +1,13 @@
-import { gql, useMutation } from "@apollo/client";
-import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import {
-  ActivityIndicator,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import * as Animatable from "react-native-animatable";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import * as yup from "yup";
-import styles from "./styles";
+/* eslint-disable react-native/no-inline-styles */
+import { gql, useMutation } from '@apollo/client';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { ActivityIndicator, Alert, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import * as yup from 'yup';
+import styles from './styles';
 
 const FORGOT_PASSWORD = gql`
   mutation Mutation($email: String!) {
@@ -22,26 +16,25 @@ const FORGOT_PASSWORD = gql`
 `;
 
 const schema = yup.object().shape({
-  email: yup.string().email("Invalid email").required("Email is required"),
+  email: yup.string().email('Invalid email').required('Email is required')
 });
 
-const ForgotPasswordScreen = ({ navigation }) => {
-  const [forgotPassword, { data, loading, error }] =
-    useMutation(FORGOT_PASSWORD);
+const ForgotPasswordScreen = () => {
+  const [forgotPassword, { data, loading, error }] = useMutation(FORGOT_PASSWORD);
   const { control, handleSubmit } = useForm({ resolver: yupResolver(schema) });
   const [mailSent, setMailSent] = useState(false);
 
-  const onSubmit = async (data) => {
-    forgotPassword({ variables: data });
+  const onSubmit = async vars => {
+    forgotPassword({ variables: vars });
   };
 
   useEffect(() => {
     if (data) {
-        setMailSent(true);
+      setMailSent(true);
     } else if (error) {
-      Alert.alert("Oops", "Forgot Password Failed", [{ text: "Try Again" }]);
+      Alert.alert('Oops', 'Forgot Password Failed', [{ text: 'Try Again' }]);
     }
-  }, [data]);
+  }, [data, error]);
 
   return (
     <View style={styles.container}>
@@ -54,15 +47,15 @@ const ForgotPasswordScreen = ({ navigation }) => {
         style={[
           styles.footer,
           {
-            backgroundColor: "#FFFFFF",
-          },
+            backgroundColor: '#FFFFFF'
+          }
         ]}
       >
         <Controller
           name="email"
           control={control}
           rules={{
-            required: true,
+            required: true
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <View>
@@ -70,22 +63,22 @@ const ForgotPasswordScreen = ({ navigation }) => {
                 style={[
                   styles.text_footer,
                   {
-                    color: "#000",
-                  },
+                    color: '#000'
+                  }
                 ]}
               >
                 Email
               </Text>
               <View style={styles.action}>
-                <FontAwesome name="user-o" color={"#000"} size={20} />
+                <FontAwesome name="user-o" color={'#000'} size={20} />
                 <TextInput
                   placeholder="Your Email"
                   placeholderTextColor="#666666"
                   style={[
                     styles.textInput,
                     {
-                      color: "#000",
-                    },
+                      color: '#000'
+                    }
                   ]}
                   autoCapitalize="none"
                   onBlur={onBlur}
@@ -97,26 +90,16 @@ const ForgotPasswordScreen = ({ navigation }) => {
           )}
         />
 
-        <View style={styles.textPrivate}>
-          {mailSent && (
-              <Text style={styles.color_textPrivate}>
-                {data.sendForgotPasswordEmail}
-              </Text>
-            )}
-        </View>
+        <View style={styles.textPrivate}>{mailSent && <Text style={styles.color_textPrivate}>{data.sendForgotPasswordEmail}</Text>}</View>
         <View style={styles.button}>
-          <TouchableOpacity
-            style={styles.signIn}
-            title="Submit"
-            onPress={handleSubmit(onSubmit)}
-          >
+          <TouchableOpacity style={styles.signIn} title="Submit" onPress={handleSubmit(onSubmit)}>
             {!loading ? (
               <Text
                 style={[
                   styles.textSign,
                   {
-                    color: "#ffffff",
-                  },
+                    color: '#ffffff'
+                  }
                 ]}
               >
                 Send Password Reset Link

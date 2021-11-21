@@ -1,26 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import CustomMarker from "../../components/CustomMarker";
-import PostMap from "../../components/PostMap";
-import { FlatList } from "react-native-gesture-handler";
-import useWindowDimensions from "react-native/Libraries/Utilities/useWindowDimensions";
-import { gql, useQuery } from "@apollo/client";
-import {useRoute} from '@react-navigation/native'
+/* eslint-disable react-native/no-inline-styles */
+import { gql, useQuery } from '@apollo/client';
+import { useRoute } from '@react-navigation/native';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions';
+import CustomMarker from '../../components/CustomMarker';
+import PostMap from '../../components/PostMap';
 
 const QUERY = gql`
-  query searchListings(
-    $latitude: Float
-    $longitude: Float
-    $offset: Int!
-    $limit: Int!
-  ) {
-    searchListings(
-      latitude: $latitude
-      longitude: $longitude
-      offset: $offset
-      limit: $limit
-    ) {
+  query searchListings($latitude: Float, $longitude: Float, $offset: Int!, $limit: Int!) {
+    searchListings(latitude: $latitude, longitude: $longitude, offset: $offset, limit: $limit) {
       id
       make
       model
@@ -39,8 +30,8 @@ const QUERY = gql`
   }
 `;
 
-const SearchResultsMap = (props) => {
-  const route = useRoute()
+const SearchResultsMap = () => {
+  const route = useRoute();
   const [selectedPlaceId, setSelectedPlaceId] = useState(null);
   const width = useWindowDimensions().width;
   const { loading, data } = useQuery(QUERY, {
@@ -48,8 +39,8 @@ const SearchResultsMap = (props) => {
       latitude: route.params.latitude,
       longitude: route.params.longitude,
       offset: 0,
-      limit: 10,
-    },
+      limit: 10
+    }
   });
   const flatlist = useRef();
   const map = useRef();
@@ -65,9 +56,7 @@ const SearchResultsMap = (props) => {
     if (!selectedPlaceId || !flatlist) {
       return;
     }
-    const index = data.searchListings.findIndex(
-      (place) => place.id === selectedPlaceId
-    );
+    const index = data.searchListings.findIndex(place => place.id === selectedPlaceId);
     flatlist.current.scrollToIndex({ index });
 
     const selectedPlace = data.searchListings[index];
@@ -75,25 +64,25 @@ const SearchResultsMap = (props) => {
       latitude: selectedPlace.latitude,
       longitude: selectedPlace.longitude,
       latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
+      longitudeDelta: 0.0421
     };
     map.current.animateToRegion(region);
-  }, [selectedPlaceId]);
+  }, [data.searchListings, selectedPlaceId]);
 
   return (
-    <View style={{ width: "100%", height: "100%" }}>
+    <View style={{ width: '100%', height: '100%' }}>
       <MapView
         ref={map}
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: '100%', height: '100%' }}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 26.4499,
           longitude: 80.3319,
           latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          longitudeDelta: 0.0421
         }}
       >
-        {data.searchListings.map((place) => (
+        {data.searchListings.map(place => (
           <CustomMarker
             latitude={place.latitude}
             longitude={place.longitude}
@@ -104,7 +93,7 @@ const SearchResultsMap = (props) => {
           />
         ))}
       </MapView>
-      <View style={{ position: "absolute", bottom: 3 }}>
+      <View style={{ position: 'absolute', bottom: 3 }}>
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
@@ -115,8 +104,8 @@ const SearchResultsMap = (props) => {
             horizontal
             showsHorizontalScrollIndicator={false}
             snapToInterval={width - 60}
-            snapToAlignment={"center"}
-            decelerationRate={"fast"}
+            snapToAlignment={'center'}
+            decelerationRate={'fast'}
             viewabilityConfig={viewConfig.current}
             onViewableItemsChanged={onViewChanged.current}
           />

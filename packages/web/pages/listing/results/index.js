@@ -1,27 +1,25 @@
-import { useQuery } from "@apollo/client";
-import { useRouter } from "next/dist/client/router";
-import Footer from "../../../components/Footer";
-import Header from "../../../components/Header";
-import InfoCard from "../../../components/InfoCard";
-import Map from "../../../components/Map";
-import { searchListings } from "../../../graphql/queries/searchListings.graphql";
+import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/dist/client/router';
+import Footer from '../../../components/Footer';
+import Header from '../../../components/Header';
+import InfoCard from '../../../components/InfoCard';
+import Map from '../../../components/Map';
+import { searchListings } from '../../../graphql/queries/searchListings.graphql';
 
 function Search() {
   const router = useRouter();
   const { lat, lng } = router.query;
 
-  const { loading, data, error } = useQuery(searchListings, {
+  const { loading, data } = useQuery(searchListings, {
     variables: {
       latitude: lat,
       longitude: lng,
       offset: 0,
-      limit: 10,
-    },
+      limit: 10
+    }
   });
 
   const listings = data?.searchListings;
-
-  console.log(listings);
 
   return (
     <div className="h-screen overflow-hidden">
@@ -42,26 +40,14 @@ function Search() {
             {loading ? (
               <p>Loading...</p>
             ) : (
-              listings?.map(
-                ({ id, make, model, description, year, price, pictureUrl }) => (
-                  <InfoCard
-                    key={id}
-                    make={make}
-                    model={model}
-                    description={description}
-                    year={year}
-                    price={price}
-                    pictureUrl={pictureUrl}
-                  />
-                )
-              )
+              listings?.map(({ id, make, model, description, year, price, pictureUrl }) => (
+                <InfoCard key={id} make={make} model={model} description={description} year={year} price={price} pictureUrl={pictureUrl} />
+              ))
             )}
           </div>
         </section>
 
-        <section className="hidden xl:inline-flex xl:min-w-[600px] h-screen">
-          {!loading && <Map searchResults={listings} />}
-        </section>
+        <section className="hidden xl:inline-flex xl:min-w-[600px] h-screen">{!loading && <Map searchResults={listings} />}</section>
       </main>
 
       <Footer />

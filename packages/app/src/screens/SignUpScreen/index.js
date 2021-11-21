@@ -1,20 +1,14 @@
-import { gql, useMutation } from "@apollo/client";
-import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import {
-  Alert,
-  StatusBar,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import * as Animatable from "react-native-animatable";
-import Feather from "react-native-vector-icons/Feather";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import * as yup from "yup";
-import styles from "./styles";
+/* eslint-disable react-native/no-inline-styles */
+import { gql, useMutation } from '@apollo/client';
+import { yupResolver } from '@hookform/resolvers/yup';
+import React, { useEffect, useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Alert, StatusBar, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import * as yup from 'yup';
+import styles from './styles';
 
 const REGISTER = gql`
   mutation Register($password: String!, $email: String!, $name: String!) {
@@ -26,9 +20,9 @@ const REGISTER = gql`
 `;
 
 const schema = yup.object().shape({
-  name: yup.string().required("Name is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().min(3).max(20).required("Password is required"),
+  name: yup.string().required('Name is required'),
+  email: yup.string().email('Invalid email').required('Email is required'),
+  password: yup.string().min(3).max(20).required('Password is required')
 });
 
 const SignUpScreen = () => {
@@ -39,20 +33,21 @@ const SignUpScreen = () => {
 
   const { control, handleSubmit } = useForm({ resolver: yupResolver(schema) });
 
-  const onSubmit = async (data) => {
-    register({ variables: data });
+  const onSubmit = async vars => {
+    register({ variables: vars });
   };
 
   useEffect(() => {
     if (data) {
+      // eslint-disable-next-line no-shadow
       const { register } = data;
-      if (register[0].path == "Submit") {
-        Alert.alert("Success!", register[0].message, [{ text: "OK" }]);
-      } else if (register[0].path == "email") {
-        Alert.alert("Oops!", register[0].message, [{ text: "OK" }]);
+      if (register[0].path === 'Submit') {
+        Alert.alert('Success!', register[0].message, [{ text: 'OK' }]);
+      } else if (register[0].path === 'email') {
+        Alert.alert('Oops!', register[0].message, [{ text: 'OK' }]);
       }
     } else if (error) {
-      Alert.alert("Oops!", "Registeration Failed", [{ text: "Try Again" }]);
+      Alert.alert('Oops!', 'Registeration Failed', [{ text: 'Try Again' }]);
     }
   }, [data, error]);
 
@@ -67,15 +62,15 @@ const SignUpScreen = () => {
         style={[
           styles.footer,
           {
-            backgroundColor: '#FFFFFF',
-          },
+            backgroundColor: '#FFFFFF'
+          }
         ]}
       >
         <Controller
           name="name"
           control={control}
           rules={{
-            required: true,
+            required: true
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <View>
@@ -83,8 +78,8 @@ const SignUpScreen = () => {
                 style={[
                   styles.text_footer,
                   {
-                    color: '#000',
-                  },
+                    color: '#000'
+                  }
                 ]}
               >
                 Name
@@ -97,8 +92,8 @@ const SignUpScreen = () => {
                   style={[
                     styles.textInput,
                     {
-                      color: '#000',
-                    },
+                      color: '#000'
+                    }
                   ]}
                   autoCapitalize="none"
                   onBlur={onBlur}
@@ -114,7 +109,7 @@ const SignUpScreen = () => {
           name="email"
           control={control}
           rules={{
-            required: true,
+            required: true
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <View>
@@ -123,8 +118,8 @@ const SignUpScreen = () => {
                   styles.text_footer,
                   {
                     color: '#000',
-                    marginTop: 35,
-                  },
+                    marginTop: 35
+                  }
                 ]}
               >
                 Email
@@ -137,8 +132,8 @@ const SignUpScreen = () => {
                   style={[
                     styles.textInput,
                     {
-                      color: '#000',
-                    },
+                      color: '#000'
+                    }
                   ]}
                   autoCapitalize="none"
                   onBlur={onBlur}
@@ -154,7 +149,7 @@ const SignUpScreen = () => {
           name="password"
           control={control}
           rules={{
-            required: true,
+            required: true
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <View>
@@ -163,8 +158,8 @@ const SignUpScreen = () => {
                   styles.text_footer,
                   {
                     color: '#000',
-                    marginTop: 35,
-                  },
+                    marginTop: 35
+                  }
                 ]}
               >
                 Password
@@ -174,12 +169,12 @@ const SignUpScreen = () => {
                 <TextInput
                   placeholder="Create your password"
                   placeholderTextColor="#666666"
-                  secureTextEntry={secureTextEntry ? true : false}
+                  secureTextEntry={!!secureTextEntry}
                   style={[
                     styles.textInput,
                     {
-                      color: '#000',
-                    },
+                      color: '#000'
+                    }
                   ]}
                   autoCapitalize="none"
                   onBlur={onBlur}
@@ -187,11 +182,7 @@ const SignUpScreen = () => {
                   value={value}
                 />
                 <TouchableOpacity onPress={updateSecureTextEntry}>
-                  {secureTextEntry ? (
-                    <Feather name="eye-off" color="grey" size={20} />
-                  ) : (
-                    <Feather name="eye" color="grey" size={20} />
-                  )}
+                  {secureTextEntry ? <Feather name="eye-off" color="grey" size={20} /> : <Feather name="eye" color="grey" size={20} />}
                 </TouchableOpacity>
               </View>
             </View>
@@ -199,32 +190,20 @@ const SignUpScreen = () => {
         />
 
         <View style={styles.textPrivate}>
-          <Text style={styles.color_textPrivate}>
-            By signing up you agree to our
-          </Text>
-          <Text style={[styles.color_textPrivate, { fontWeight: "bold" }]}>
-            {" "}
-            Terms of service
-          </Text>
+          <Text style={styles.color_textPrivate}>By signing up you agree to our</Text>
+          <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}> Terms of service</Text>
           <Text style={styles.color_textPrivate}> and</Text>
-          <Text style={[styles.color_textPrivate, { fontWeight: "bold" }]}>
-            {" "}
-            Privacy policy
-          </Text>
+          <Text style={[styles.color_textPrivate, { fontWeight: 'bold' }]}> Privacy policy</Text>
         </View>
 
         <View style={styles.button}>
-          <TouchableOpacity
-            style={styles.signIn}
-            title="Submit"
-            onPress={handleSubmit(onSubmit)}
-          >
+          <TouchableOpacity style={styles.signIn} title="Submit" onPress={handleSubmit(onSubmit)}>
             <Text
               style={[
                 styles.textSign,
                 {
-                  color: "#ffffff",
-                },
+                  color: '#ffffff'
+                }
               ]}
             >
               Sign Up

@@ -4,15 +4,15 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
-      height: theme => ({
-        "screen/3": "calc(100vh / 3)",
-        "screen/4": "calc(100vh / 4)",
-        "screen/5": "calc(100vh / 5)",
+      height: () => ({
+        'screen/3': 'calc(100vh / 3)',
+        'screen/4': 'calc(100vh / 4)',
+        'screen/5': 'calc(100vh / 5)'
       }),
       borderWidth: {
-        "1": "1px",
-      },
-    },
+        1: '1px'
+      }
+    }
   },
   variants: {
     extend: {}

@@ -1,18 +1,10 @@
-import React, { useState } from "react";
-import {
-  SafeAreaView,
-  Text,
-  View,
-  Pressable,
-  Image,
-  TouchableOpacity,
-} from "react-native";
-import styles from "./styles";
-import Fontisto from "react-native-vector-icons/Fontisto";
-import { useNavigation } from "@react-navigation/native";
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Image, Pressable, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import styles from './styles';
 
-const Post = (props) => {
+const Post = props => {
   const post = props.post;
 
   const [fav, setfav] = useState(false);
@@ -24,27 +16,20 @@ const Post = (props) => {
   const navigation = useNavigation();
 
   const goToPostPage = () => {
-    navigation.navigate("Post", { post: post });
+    navigation.navigate('Post', { post: post });
   };
 
   return (
     <SafeAreaView>
       <Pressable onPress={goToPostPage} style={styles.container}>
         <View style={styles.innerContainer}>
-          <TouchableOpacity
-            style={styles.addToFavourites}
-            onPress={() => addToFavourites()}
-          >
-            <Ionicons
-              name={fav ? "md-heart" : "md-heart-outline"}
-              size={35}
-              color="#ff6347"
-            />
+          <TouchableOpacity style={styles.addToFavourites} onPress={() => addToFavourites()}>
+            <Ionicons name={fav ? 'md-heart' : 'md-heart-outline'} size={35} color="#ff6347" />
           </TouchableOpacity>
           <Image
             style={styles.image}
             source={{
-              uri: post.pictureUrl,
+              uri: post.pictureUrl
             }}
           />
           {/* <Text style={styles.rating}>

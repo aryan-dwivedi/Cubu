@@ -1,11 +1,10 @@
-import { validUserSchema } from "../../../utils/userValidator";
-
-import { ResolverMap } from "../../../types/graphql-utils";
-import { User } from "../../../entities/User";
-import { formatYupError } from "../../../utils/formatYupError";
-import { duplicateEmail } from "./errorMessages";
-import { createConfirmEmailLink } from "./createConfirmEmailLink";
-import { sendEmail } from "../../../utils/sendEmail";
+import { User } from '../../../entities/User';
+import { ResolverMap } from '../../../types/graphql-utils';
+import { formatYupError } from '../../../utils/formatYupError';
+import { sendEmail } from '../../../utils/sendEmail';
+import { validUserSchema } from '../../../utils/userValidator';
+import { createConfirmEmailLink } from './createConfirmEmailLink';
+import { duplicateEmail } from './errorMessages';
 
 export const resolvers: ResolverMap = {
   Mutation: {
@@ -20,13 +19,13 @@ export const resolvers: ResolverMap = {
 
       const userAlreadyExists = await User.findOne({
         where: { email },
-        select: ["id"]
+        select: ['id']
       });
 
       if (userAlreadyExists) {
         return [
           {
-            path: "email",
+            path: 'email',
             message: duplicateEmail
           }
         ];
@@ -40,20 +39,16 @@ export const resolvers: ResolverMap = {
 
       await user.save();
 
-      if (process.env.NODE_ENV !== "test") {
-        await sendEmail(
-          email,
-          await createConfirmEmailLink(url, user.id, redis),
-          "Confirm email"
-        );
+      if (process.env.NODE_ENV !== 'test') {
+        await sendEmail(email, await createConfirmEmailLink(url, user.id, redis), 'Confirm email');
       }
 
       return [
         {
-          path: "Submit",
-          message: "Confirmation mail sent"
+          path: 'Submit',
+          message: 'Confirmation mail sent'
         }
-      ];;
+      ];
     }
   }
 };

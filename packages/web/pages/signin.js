@@ -14,8 +14,8 @@ export default function LoginPage() {
 
   const handleEye = () => setShow(!show);
 
-  const onSubmit = async data => {
-    signIn({ variables: data });
+  const onSubmit = async vars => {
+    signIn({ variables: vars });
   };
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function LoginPage() {
         router.push('/');
       }
     }
-  }, [data, error]);
+  }, [data, error, router]);
 
   return (
     <div>
@@ -43,13 +43,13 @@ export default function LoginPage() {
               <input
                 type="text"
                 name="email"
-                className={`w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4`}
+                className={'w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4'}
                 id="email"
                 placeholder="Email"
                 autoComplete="off"
                 {...register('email')}
               />
-              {errors != null && errors.path == 'email' && <p className="text-red-500 text-sm -mt-3">{errors.message}</p>}
+              {errors != null && errors.path === 'email' && <p className="text-red-500 text-sm -mt-3">{errors.message}</p>}
             </div>
             <div>
               <div className="flex justify-between">
@@ -63,7 +63,7 @@ export default function LoginPage() {
               <div className="flex items-center">
                 <input
                   type={show ? 'text' : 'password'}
-                  className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4 flex-1`}
+                  className={'w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4 flex-1'}
                   id="password"
                   placeholder="Password"
                   autoComplete="off"
@@ -74,20 +74,24 @@ export default function LoginPage() {
                   {show ? <EyeIcon className="h-4 w-4 mr-2 text-gray-700" /> : <EyeOffIcon className="h-4 w-4 mr-2 text-gray-700" />}
                 </button>
               </div>
-              {errors != null && errors.path == 'password' && <p className="text-red-500 text-sm -mt-3">{errors.message}</p>}
+              {errors != null && errors.path === 'password' && <p className="text-red-500 text-sm -mt-3">{errors.message}</p>}
             </div>
 
             <div className="flex justify-center items-center mt-6">
               {loading ? (
                 <button
-                  className={`bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700`}
+                  className={
+                    'bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700'
+                  }
                 >
                   Loading...
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className={`bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700`}
+                  className={
+                    'bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700'
+                  }
                 >
                   Login
                 </button>

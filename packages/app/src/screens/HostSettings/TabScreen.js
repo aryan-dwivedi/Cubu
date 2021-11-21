@@ -1,8 +1,8 @@
-import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Vehicle from './Vehicle';
+import React from 'react';
 import Earnings from './Earnings';
 import Reviews from './Reviews';
+import Vehicle from './Vehicle';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,7 +13,7 @@ const TabScreen = () => {
       <Tab.Screen name="Reviews" component={Reviews} />
       <Tab.Screen name="Earnings" component={Earnings} />
     </Tab.Navigator>
-  )
-}
+  );
+};
 
-export default TabScreen
+export default TabScreen;

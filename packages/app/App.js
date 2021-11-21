@@ -15,7 +15,7 @@ export default class App extends React.PureComponent {
     return (
       <ApolloProvider client={client}>
         <Navigator />
-     </ApolloProvider>
+      </ApolloProvider>
     );
   }
 }

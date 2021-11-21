@@ -1,12 +1,8 @@
-import { Redis } from "ioredis";
-import { USER_SESSION_PREFIX, REDIS_SESSION_PREFIX } from "../constants";
+import { Redis } from 'ioredis';
+import { REDIS_SESSION_PREFIX, USER_SESSION_PREFIX } from '../constants';
 
 export const removeAllUsersSessions = async (userId: string, redis: Redis) => {
-  const sessionIds = await redis.lrange(
-    `${USER_SESSION_PREFIX}${userId}`,
-    0,
-    -1
-  );
+  const sessionIds = await redis.lrange(`${USER_SESSION_PREFIX}${userId}`, 0, -1);
 
   const promises = [] as any;
   for (let i = 0; i < sessionIds.length; i += 1) {

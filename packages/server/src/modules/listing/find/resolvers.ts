@@ -10,9 +10,10 @@ export const resolvers: ResolverMap = {
       if (parent.pictureUrl.includes('http')) {
         return parent.pictureUrl;
       }
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       return `${url}/images/${parent.pictureUrl}`;
     },
-    owner: ({ userId }, _, { userLoader }) => userLoader.load(userId)
+    owner: async ({ userId }, _, { userLoader }) => await userLoader.load(userId)
   },
   Query: {
     findListings: async (_, __, { redis }) => {

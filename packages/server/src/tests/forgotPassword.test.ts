@@ -1,15 +1,14 @@
-import { Connection } from "typeorm";
-import Redis from "ioredis";
-import faker from "faker";
-import { passwordNotLongEnough } from "../utils/userValidator";
-
-import { User } from "../entities/User";
-import { TestClient } from "../utils/TestClient";
-import { createForgotPasswordLink } from "../utils/createForgotPasswordLink";
-import { forgotPasswordLockAccount } from "../utils/forgotPasswordLockAccount";
-import { expiredKeyError } from "../modules/user/forgotPassword/errorMessages";
-import { forgotPasswordLockedError } from "../modules/user/login/errorMessages";
-import { createTestConn } from "./createTestConn";
+import faker from 'faker';
+import Redis from 'ioredis';
+import { Connection } from 'typeorm';
+import { User } from '../entities/User';
+import { expiredKeyError } from '../modules/user/forgotPassword/errorMessages';
+import { forgotPasswordLockedError } from '../modules/user/login/errorMessages';
+import { createForgotPasswordLink } from '../utils/createForgotPasswordLink';
+import { forgotPasswordLockAccount } from '../utils/forgotPasswordLockAccount';
+import { TestClient } from '../utils/TestClient';
+import { passwordNotLongEnough } from '../utils/userValidator';
+import { createTestConn } from './createTestConn';
 
 let conn: Connection;
 export const redis = new Redis();
@@ -30,18 +29,18 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  conn.close();
+  void conn.close();
 });
 
-describe("forgot password", () => {
-  test("make sure it works", async () => {
+describe('forgot password', () => {
+  test('make sure it works', async () => {
     const client = new TestClient(process.env.TEST_HOST as string);
 
     // lock account
     await forgotPasswordLockAccount(userId, redis);
-    const url = await createForgotPasswordLink("", userId, redis);
+    const url = await createForgotPasswordLink('', userId, redis);
 
-    const parts = url.split("/");
+    const parts = url.split('/');
     const key = parts[parts.length - 1];
 
     // make sure you can't login to locked account
@@ -49,7 +48,7 @@ describe("forgot password", () => {
       data: {
         login: [
           {
-            path: "email",
+            path: 'email',
             message: forgotPasswordLockedError
           }
         ]
@@ -57,11 +56,11 @@ describe("forgot password", () => {
     });
 
     // try changing to a password that's too short
-    expect(await client.forgotPasswordChange("a", key)).toEqual({
+    expect(await client.forgotPasswordChange('a', key)).toEqual({
       data: {
         forgotPasswordChange: [
           {
-            path: "newPassword",
+            path: 'newPassword',
             message: passwordNotLongEnough
           }
         ]
@@ -75,13 +74,11 @@ describe("forgot password", () => {
     });
 
     // make sure redis key expires after password change
-    expect(
-      await client.forgotPasswordChange(faker.internet.password(), key)
-    ).toEqual({
+    expect(await client.forgotPasswordChange(faker.internet.password(), key)).toEqual({
       data: {
         forgotPasswordChange: [
           {
-            path: "key",
+            path: 'key',
             message: expiredKeyError
           }
         ]

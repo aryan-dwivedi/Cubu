@@ -1,47 +1,46 @@
-require("dotenv-safe").config();
-import express from "express";
-import { ApolloServer } from "apollo-server-express";
-import { genSchema } from "./utils/genSchema";
-import { confirmEmail } from "./routes/confirmEmail";
-import { createTestConn } from "./tests/createTestConn";
-import { createTypeormConn } from "./utils/createTypeormConn";
-import { Listing } from "./entities/Listing";
-import { REDIS_SESSION_PREFIX, LISTING_CACHE_KEY, __prod__, COOKIE_NAME } from "./constants";
-import { userLoader } from "./loaders/UserLoader";
+/* eslint-disable no-console */
 import { ApolloServerPluginLandingPageGraphQLPlayground } from 'apollo-server-core';
-import { createServer } from 'http';
+import { ApolloServer } from 'apollo-server-express';
+import express from 'express';
+import RateLimit from 'express-rate-limit';
+import session from 'express-session';
 import { execute, subscribe } from 'graphql';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
+import { createServer } from 'http';
+import Redis from 'ioredis';
+import RateLimitRedisStore from 'rate-limit-redis';
 import { SubscriptionServer } from 'subscriptions-transport-ws';
-import { RedisPubSub } from "graphql-redis-subscriptions";
-import Redis from "ioredis";
-import RateLimit from "express-rate-limit";
-import RateLimitRedisStore from "rate-limit-redis";
-import session from "express-session";
+import { COOKIE_NAME, LISTING_CACHE_KEY, REDIS_SESSION_PREFIX, _prod_ } from './constants';
+import { Listing } from './entities/Listing';
+import { userLoader } from './loaders/UserLoader';
+import { confirmEmail } from './routes/confirmEmail';
+import { createTestConn } from './tests/createTestConn';
+import { createTypeormConn } from './utils/createTypeormConn';
+import { genSchema } from './utils/genSchema';
 
-let RedisStore = require('connect-redis')(session)
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const RedisStore = require('connect-redis')(session);
 
 const startServer = async () => {
-
   const schema = genSchema() as any;
   const app = express();
   const redis = new Redis(process.env.REDIS_URL);
 
-  if (process.env.NODE_ENV === "test") {
+  if (process.env.NODE_ENV === 'test') {
     await redis.flushall();
   }
 
   const pubsub = new RedisPubSub(
-    process.env.NODE_ENV === "production"
+    process.env.NODE_ENV === 'production'
       ? {
-        connection: process.env.REDIS_URL as any
-      }
+          connection: process.env.REDIS_URL as any
+        }
       : {}
   );
 
-  if (process.env.NODE_ENV === "test") {
+  if (process.env.NODE_ENV === 'test') {
     await createTestConn(true);
-  }
-  else {
+  } else {
     await createTypeormConn();
   }
 
@@ -61,22 +60,23 @@ const startServer = async () => {
       name: COOKIE_NAME,
       store: new RedisStore({
         client: redis,
-        prefix: REDIS_SESSION_PREFIX,
+        prefix: REDIS_SESSION_PREFIX
       }),
       cookie: {
-        path: "/",
+        path: '/',
         maxAge: 1000 * 60 * 60 * 24 * 30,
         httpOnly: true,
-        sameSite: "lax",
+        sameSite: 'lax',
         secure: false,
-        domain: __prod__ ? ".localhost:3000" : undefined,
+        domain: _prod_ ? '.localhost:3000' : undefined
       },
       saveUninitialized: false,
       secret: process.env.SECRET as string,
-      resave: false,
+      resave: false
     }) as any
   );
-  app.get("/confirm/:id", confirmEmail);
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  app.get('/confirm/:id', confirmEmail);
 
   const httpServer = createServer(app);
 
@@ -84,7 +84,8 @@ const startServer = async () => {
     schema: schema,
     context: ({ req, res }) => ({
       redis,
-      url: req ? req.protocol + "://" + req.get("host") : '',
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      url: req ? req.protocol + '://' + req.get('host') : '',
       session: req ? req.session : undefined,
       req: req,
       res: res,
@@ -94,7 +95,7 @@ const startServer = async () => {
     plugins: [
       ApolloServerPluginLandingPageGraphQLPlayground({
         settings: {
-          'request.credentials': 'include',
+          'request.credentials': 'include'
         }
       }),
       {
@@ -118,13 +119,10 @@ const startServer = async () => {
 
   server.applyMiddleware({
     app,
-    cors,
+    cors
   });
 
-  const subscriptionServer = SubscriptionServer.create(
-    { schema, execute, subscribe },
-    { server: httpServer, path: server.graphqlPath }
-  );
+  const subscriptionServer = SubscriptionServer.create({ schema, execute, subscribe }, { server: httpServer, path: server.graphqlPath });
 
   await redis.del(LISTING_CACHE_KEY);
   const listings = await Listing.find();
@@ -133,14 +131,14 @@ const startServer = async () => {
     await redis.lpush(LISTING_CACHE_KEY, ...listingStrings);
   }
 
-  const port = process.env.PORT || 4000;
+  const port = process.env.PORT ?? 4000;
 
   httpServer.listen(port, () => {
-    console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`)
-    console.log(`Subscriptions ready at ws://localhost:${port}${server.graphqlPath}`)
+    console.log(`Server ready at http://localhost:${port}${server.graphqlPath}`);
+    console.log(`Subscriptions ready at ws://localhost:${port}${server.graphqlPath}`);
   });
 };
 
-startServer().catch((err) => {
+startServer().catch(err => {
   console.error(err);
 });

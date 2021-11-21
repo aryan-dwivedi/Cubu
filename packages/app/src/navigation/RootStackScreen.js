@@ -1,4 +1,4 @@
-import {createStackNavigator} from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import SignInScreen from '../screens/SignInScreen';
@@ -10,15 +10,13 @@ const RootStack = createStackNavigator();
 const RootStackScreen = () => (
   <RootStack.Navigator
     screenOptions={{
-      headerShown: false,
-    }}>
+      headerShown: false
+    }}
+  >
     <RootStack.Screen name="SplashScreen" component={SplashScreen} />
     <RootStack.Screen name="SignIn Screen" component={SignInScreen} />
     <RootStack.Screen name="SignUp Screen" component={SignUpScreen} />
-    <RootStack.Screen
-      name="Forgot Password Screen"
-      component={ForgotPasswordScreen}
-    />
+    <RootStack.Screen name="Forgot Password Screen" component={ForgotPasswordScreen} />
   </RootStack.Navigator>
 );
 

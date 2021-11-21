@@ -1,13 +1,13 @@
-import { ResolverMap } from "../../../types/graphql-utils";
-import { Message } from "../../../entities/Message";
+import { Message } from '../../../entities/Message';
+import { ResolverMap } from '../../../types/graphql-utils';
 
 export const resolvers: ResolverMap = {
   Message: {
-    user: ({ userId }, _, { userLoader }) => userLoader.load(userId)
+    user: async ({ userId }, _, { userLoader }) => await userLoader.load(userId)
   },
   Query: {
     messages: async (_, { listingId }, { session }) => {
-      return Message.find({
+      return await Message.find({
         where: {
           listingId,
           userId: session.userId

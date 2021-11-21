@@ -13,7 +13,6 @@
     "@heroicons/react": "^1.0.4",
     "@hookform/resolvers": "^2.8.3",
     "@mui/material": "^5.0.6",
-    "@react-hook/media-query": "^1.1.1",
     "date-fns": "^2.23.0",
     "feather-icons": "^4.28.0",
     "geolib": "^3.3.1",
