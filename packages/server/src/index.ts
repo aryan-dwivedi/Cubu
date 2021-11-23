@@ -71,7 +71,7 @@ const startServer = async () => {
         domain: _prod_ ? '.localhost:3000' : undefined
       },
       saveUninitialized: false,
-      secret: process.env.SECRET as string,
+      secret: process.env.SECRET ?? ['vfvdfvdfvdfvdvd'],
       resave: false
     }) as any
   );
@@ -114,7 +114,7 @@ const startServer = async () => {
 
   const cors = {
     credentials: true,
-    origin: process.env.FRONTEND_HOST
+    origin: process.env.FRONTEND_HOST ?? 'http://localhost:3000'
   };
 
   server.applyMiddleware({

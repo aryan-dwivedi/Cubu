@@ -26,10 +26,7 @@
     "android": "lerna run --parallel --scope @cubu/app android",
     "server:test": "lerna run --parallel --scope @cubu/server test",
     "server:watch": "lerna run --parallel --scope @cubu/server watch",
-    "server": "lerna run --parallel --scope @cubu/server start",
-    "core:build": "lerna run --stream --scope @cubu/core build",
-    "core:build:w": "lerna run --parallel --scope @cubu/core build:w",
-    "core:sb": "lerna run --parallel --scope @cubu/core storybook"
+    "server": "lerna run --parallel --scope @cubu/server start"
   },
   "dependencies": {
     "autoprefixer": "^10.4.0",

@@ -1,4 +1,0 @@
-{
-  "!(*stories|*d)*.(ts|tsx)": "eslint --fix",
-  "*.json": "prettier --write"
-}
