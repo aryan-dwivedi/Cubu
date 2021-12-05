@@ -10,6 +10,7 @@ export default function LoginPage() {
   const [password, { data, error, loading }] = useMutation(forgotPasswordChange);
   const { register, handleSubmit } = useForm();
 
+  // eslint-disable-next-line no-shadow
   const onSubmit = async data => {
     password({
       variables: {
@@ -42,7 +43,7 @@ export default function LoginPage() {
               <div className="flex items-center">
                 <input
                   type="password"
-                  className={`w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4 flex-1`}
+                  className={'w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4 flex-1'}
                   id="password"
                   placeholder="New Password"
                   autoComplete="off"
@@ -56,14 +57,18 @@ export default function LoginPage() {
             <div className="flex justify-center items-center mt-6">
               {loading ? (
                 <button
-                  className={`bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700`}
+                  className={
+                    'bg-indigo-500 py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700'
+                  }
                 >
                   Loading...
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className={`bg-indigo-500 py-2 px-16 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700`}
+                  className={
+                    'bg-indigo-500 py-2 px-16 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700'
+                  }
                 >
                   Change Password
                 </button>

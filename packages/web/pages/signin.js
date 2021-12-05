@@ -31,9 +31,9 @@ export default function LoginPage() {
   return (
     <div>
       <Header />
-      <div className="m-32 flex">
-        <div className="w-full max-w-sm m-auto bg-white rounded-lg border border-primaryBorder shadow-default drop-shadow-lg py-10 px-16">
-          <h1 className="text-2xl font-medium text-primary mt-4 mb-12 text-center">Welcome Back</h1>
+      <div className="w-full max-w-xs sm:max-w-sm m-auto mt-24">
+        <div className="bg-white rounded-lg border border-primaryBorder shadow-default drop-shadow-lg py-10 px-10">
+          <h1 className="text-3xl font-serif font-semibold text-primary mt-4 mb-12 text-center">Welcome Back</h1>
 
           <form onSubmit={handleSubmit(onSubmit)}>
             <div>
@@ -43,7 +43,9 @@ export default function LoginPage() {
               <input
                 type="text"
                 name="email"
-                className={'w-full p-2 text-primary border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4'}
+                className={
+                  'w-full p-2 text-primary border focus:border-indigo-500 rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4'
+                }
                 id="email"
                 placeholder="Email"
                 autoComplete="off"
@@ -56,21 +58,23 @@ export default function LoginPage() {
                 <label htmlFor="password" className="text-sm text-primary">
                   Password
                 </label>
-                <button type="button" onClick={() => router.push('/forgot-password')} className="text-xs">
+                <button type="button" onClick={() => router.push('/forgot-password')} className="text-xs text-indigo-500 font-medium">
                   Forgot Password?
                 </button>
               </div>
               <div className="flex items-center">
                 <input
                   type={show ? 'text' : 'password'}
-                  className={'w-full p-2 border rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4 flex-1'}
+                  className={
+                    'w-full p-2 pr-10 border focus:border-indigo-500 rounded-md outline-none text-sm transition duration-150 ease-in-out mb-4 flex-1'
+                  }
                   id="password"
                   placeholder="Password"
                   autoComplete="off"
                   name="password"
                   {...register('password')}
                 />
-                <button type="button" className="absolute mb-4 ml-52 flex items-center pl-2" onClick={handleEye}>
+                <button type="button" className="absolute mb-4 sm:ml-64 ml-48 flex items-center pl-2" onClick={handleEye}>
                   {show ? <EyeIcon className="h-4 w-4 mr-2 text-gray-700" /> : <EyeOffIcon className="h-4 w-4 mr-2 text-gray-700" />}
                 </button>
               </div>
@@ -101,7 +105,11 @@ export default function LoginPage() {
             <div>
               <p className="text-center text-sm text-primary mt-4">
                 Don&apos;t have an account?
-                <button type="button" onClick={() => router.push('/signup')} className="text-primary ml-2 text-border-indigo-500">
+                <button
+                  type="button"
+                  onClick={() => router.push('/signup')}
+                  className="text-primary font-medium ml-2 border border-black py-1 px-2 rounded-sm"
+                >
                   Sign Up
                 </button>
               </p>

@@ -31,7 +31,7 @@ export const resolvers: ResolverMap = {
         ];
       }
 
-      const user = User.create({
+      const user = await User.create({
         name,
         email,
         password
