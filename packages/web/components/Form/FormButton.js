@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export default function FormButton() {
-  const [formStep, setFormStep] = useState(1);
+export default function FormButton({ formStep, setFormStep, disabled, setDisabled }) {
   if (formStep === 1) {
     return (
       <div
@@ -25,22 +24,15 @@ export default function FormButton() {
         </button>
         <button
           type="button"
-          //   onClick={() => setFormStep(formStep + 1) && setButtonDisabled(true)}
-          //   disabled={buttonDisabled}
-          //   className={`${buttonDisabled ? 'bg-gray-400' : 'bg-black'} py-3 px-8 text-sm text-white rounded-md border`}
+          onClick={() => setFormStep(formStep + 1) && setDisabled(true)}
+          disabled={disabled}
+          className={`${disabled ? 'bg-gray-400' : 'bg-black'} py-3 px-8 text-sm text-white rounded-md border`}
         >
           Next
         </button>
       </div>
     );
   } else {
-    // return loading ? (
-    //   <button
-    //     className={'bg-black py-2 px-24 text-sm text-white rounded border border-indigo-500 focus:outline-none focus:border-indigo-700'}
-    //   >
-    //     Loading...
-    //   </button>
-    // ) : (
     return (
       <div className="flex justify-center items-center mt-6">
         <button

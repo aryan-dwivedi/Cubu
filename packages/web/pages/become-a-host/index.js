@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React from 'react';
+import React, { useState } from 'react';
 import Form from '../../components/Form/Form';
 import FormButton from '../../components/Form/FormButton';
 import FormText from '../../components/Form/FormText';
@@ -7,7 +7,12 @@ import { Me } from '../../graphql/queries/me.graphql';
 
 function Search() {
   const { data: MeData } = useQuery(Me);
-  const formStep = 1;
+  const [formStep, setFormStep] = useState(1);
+  const [disabled, setDisabled] = useState(false);
+
+  function handleStepChange(step) {
+    setFormStep(step);
+  }
 
   return (
     <div className="h-screen overflow-hidden">
@@ -23,9 +28,9 @@ function Search() {
           } items-center justify-center sm:rounded-none rounded-t-3xl z-10`}
         >
           <div className={`${formStep === 1 ? '-mt-96 sm:mt-0' : '-mt-96'}`}>
-            <Form formStep={formStep} />
+            <Form formStep={formStep} onChange={handleStepChange} />
           </div>
-          <FormButton />
+          <FormButton setFormStep={setFormStep} formStep={formStep} disabled={disabled} setDisabled={setDisabled} />
         </div>
       </div>
     </div>

@@ -8,9 +8,9 @@ function FormText(props) {
   } else if (formStep === 3) {
     return 'What is model of your car?';
   } else if (formStep === 4) {
-    return '{Lets get some details}';
+    return 'What is year of your car?';
   } else if (formStep === 5) {
-    return '{Lets get some details}';
+    return 'Where is your car located?';
   }
 }
 

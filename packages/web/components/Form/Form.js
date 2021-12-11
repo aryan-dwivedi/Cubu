@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable array-callback-return */
 import { useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
@@ -5,55 +6,75 @@ import { Controller, useForm } from 'react-hook-form';
 import Select from 'react-select';
 import { searchMake } from '../../graphql/queries/searchMake.graphql';
 import { searchModel } from '../../graphql/queries/searchModel.graphql';
+import { searchYear } from '../../graphql/queries/searchYear.graphql';
+import GetLocation from '../GetLocation';
 
 export default function Form(props) {
   const formStep = props.formStep;
   const { control, getValues } = useForm({
     defaultValues: {
       make: '',
-      model: 'Ford',
-      year: '',
-      price: '',
-      description: '',
+      model: '',
+      year: null,
+      price: null,
+      latitude: null,
+      longitude: null,
+      description: null,
+      features: [],
       images: []
     }
   });
   const [makeDataOptions, setMakeDataOptions] = useState([]);
   const [modelDataOptions, setModelDataOptions] = useState([]);
+  const [yearDataOptions, setYearDataOptions] = useState([]);
 
   // GraphQL
   const { loading: MakeListingLoading, data: MakeListingData } = useQuery(searchMake);
   const { loading: ModelListingLoading, data: ModelListingData } = useQuery(searchModel, {
     variables: {
-      make: getValues('make')
+      make: getValues('make').value
+    }
+  });
+  const { loading: YearListingLoading, data: YearListingData } = useQuery(searchYear, {
+    variables: {
+      make: getValues('make').value,
+      model: getValues('model').value
     }
   });
 
   useEffect(() => {
+    const value = getValues();
+    console.log(value);
+    console.log(YearListingData);
+  }, [YearListingData, getValues]);
+
+  useEffect(() => {
     if (formStep === 2) {
-      MakeListingLoading
-        ? setMakeDataOptions([
-            {
-              value: '',
-              label: 'Loading...'
-            }
-          ])
-        : MakeListingData.searchMake.map(item => {
-            setMakeDataOptions(result => [...result, { value: item, label: item }]);
-          });
+      MakeListingLoading ? (
+        <div>Loading</div>
+      ) : (
+        MakeListingData.searchMake.map(item => {
+          setMakeDataOptions(result => [...result, { value: item, label: item }]);
+        })
+      );
     } else if (formStep === 3) {
-      ModelListingLoading
-        ? setModelDataOptions([
-            {
-              value: '',
-              label: 'Loading...'
-            }
-          ])
-        : ModelListingData.searchModel.map(item => {
-            setModelDataOptions(result => [...result, { value: item, label: item }]);
-          });
+      ModelListingLoading ? (
+        <div>Loading</div>
+      ) : (
+        ModelListingData.searchModel.map(item => {
+          setModelDataOptions(result => [...result, { value: item, label: item }]);
+        })
+      );
+    } else if (formStep === 4) {
+      YearListingLoading ? (
+        <div>Loading</div>
+      ) : (
+        YearListingData.searchYear.map(item => {
+          setYearDataOptions(result => [...result, { value: item, label: item }]);
+        })
+      );
     }
-  }, [formStep, MakeListingData, ModelListingData, MakeListingLoading, ModelListingLoading]);
+  }, [formStep, MakeListingData, ModelListingData, MakeListingLoading, ModelListingLoading, YearListingLoading, YearListingData]);
 
   const customStyles = {
     menuList: styles => {
@@ -94,46 +115,49 @@ export default function Form(props) {
       </div>
     );
   } else if (formStep === 2) {
-    return (
+    return MakeListingLoading ? (
+      <div>Loading...</div>
+    ) : (
       <Controller
+        name="make"
         control={control}
         rules={{ required: true }}
-        render={({ onChange, value }) => (
-          <Select
-            styles={customStyles}
-            id="make"
-            options={makeDataOptions}
-            isMulti={false}
-            placeholder="Select make"
-            value={value}
-            onChange={() => {
-              onChange;
-            }}
-          />
+        render={({ field }) => (
+          <Select {...field} styles={customStyles} id="make" options={makeDataOptions} isMulti={false} placeholder="Select make" />
         )}
-        name="make"
       />
     );
   } else if (formStep === 3) {
-    return (
+    return ModelListingLoading ? (
+      <div>Loading...</div>
+    ) : (
       <Controller
         control={control}
         rules={{ required: true }}
-        render={({ onChange, value }) => (
-          <Select
-            styles={customStyles}
-            id="model"
-            options={modelDataOptions}
-            isMulti={false}
-            placeholder="Select model"
-            value={value}
-            onChange={() => {
-              onChange;
-            }}
-          />
-        )}
         name="model"
+        render={({ field }) => (
+          <Select {...field} styles={customStyles} id="model" options={modelDataOptions} isMulti={false} placeholder="Select model" />
+        )}
       />
+    );
+  } else if (formStep === 4) {
+    return YearListingLoading ? (
+      <div>Loading...</div>
+    ) : (
+      <Controller
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => (
+          <Select {...field} styles={customStyles} id="year" options={yearDataOptions} isMulti={false} placeholder="Select Year" />
+        )}
+        name="year"
+      />
+    );
+  } else if (formStep === 5) {
+    return (
+      <div className="w-100 h-100">
+        <GetLocation />
+      </div>
     );
   }
 }
