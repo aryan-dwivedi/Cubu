@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { Logout } from '../graphql/mutations/logout.graphql';
 import { Me } from '../graphql/queries/me.graphql';
+import Loading from './Loading';
 import SearchBar from './SearchBar';
 
 function Header() {
@@ -38,7 +39,7 @@ function Header() {
         {loading ? (
           <div className="flex flex-col items-center justify-center">
             <div className="text-center">
-              <p className="text-gray-600 text-sm">Loading...</p>
+              <Loading />
             </div>
           </div>
         ) : (

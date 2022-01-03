@@ -2,6 +2,7 @@
 import { LocationMarkerIcon, SearchIcon } from '@heroicons/react/solid';
 import React, { useState } from 'react';
 import PlacesAutocomplete from 'react-places-autocomplete';
+import Loading from './Loading';
 export default function SearchBar() {
   const [address, setAddress] = useState('');
   const [coordinates, setCoordinates] = useState({
@@ -36,7 +37,7 @@ export default function SearchBar() {
               className="flex-grow pl-5 pr-100 w-full bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400"
             />
             <div className="absolute mt-5">
-              {loading ? <div>...loading</div> : null}
+              {loading ? <Loading /> : null}
               {suggestions.map(suggestion => {
                 const style = {
                   backgroundColor: suggestion.active ? '#5465FF' : '#fff'

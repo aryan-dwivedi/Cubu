@@ -3,7 +3,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as SecureStore from 'expo-secure-store';
-import LottieView from 'lottie-react-native';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -15,6 +14,7 @@ import NewPost from '../screens/NewPost';
 import PostScreen from '../screens/PostScreen';
 import SearchResultsScreen from '../screens/SearchResults';
 import SearchResultsMap from '../screens/SearchResultsMap';
+import SplashScreen from '../screens/SplashScreen';
 import { AuthContext } from './Context';
 import HomeTabNavigator from './HomeTabNavigatior';
 import RootStackScreen from './RootStackScreen';
@@ -88,11 +88,7 @@ const Navigator = () => {
   }, []);
 
   if (loginState.isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <LottieView source={require('../../assets/53192-car-animated.json')} autoPlay loop />
-      </View>
-    );
+    return <SplashScreen />;
   }
 
   return (

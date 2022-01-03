@@ -118,44 +118,50 @@ export default function Form(props) {
     return MakeListingLoading ? (
       <div>Loading...</div>
     ) : (
-      <Controller
-        name="make"
-        control={control}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <Select {...field} styles={customStyles} id="make" options={makeDataOptions} isMulti={false} placeholder="Select make" />
-        )}
-      />
+      <div className="-mt-96">
+        <Controller
+          name="make"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select {...field} styles={customStyles} id="make" options={makeDataOptions} isMulti={false} placeholder="Select make" />
+          )}
+        />
+      </div>
     );
   } else if (formStep === 3) {
     return ModelListingLoading ? (
       <div>Loading...</div>
     ) : (
-      <Controller
-        control={control}
-        rules={{ required: true }}
-        name="model"
-        render={({ field }) => (
-          <Select {...field} styles={customStyles} id="model" options={modelDataOptions} isMulti={false} placeholder="Select model" />
-        )}
-      />
+      <div className="-mt-96">
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          name="model"
+          render={({ field }) => (
+            <Select {...field} styles={customStyles} id="model" options={modelDataOptions} isMulti={false} placeholder="Select model" />
+          )}
+        />
+      </div>
     );
   } else if (formStep === 4) {
     return YearListingLoading ? (
       <div>Loading...</div>
     ) : (
-      <Controller
-        control={control}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <Select {...field} styles={customStyles} id="year" options={yearDataOptions} isMulti={false} placeholder="Select Year" />
-        )}
-        name="year"
-      />
+      <div className="-mt-96">
+        <Controller
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select {...field} styles={customStyles} id="year" options={yearDataOptions} isMulti={false} placeholder="Select Year" />
+          )}
+          name="year"
+        />
+      </div>
     );
   } else if (formStep === 5) {
     return (
-      <div className="w-100 h-100">
+      <div className="inline-flex w-screen/2 h-screen">
         <GetLocation />
       </div>
     );

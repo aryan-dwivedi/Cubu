@@ -27,9 +27,7 @@ function Search() {
             formStep === 1 ? 'bg-black' : 'bg-white'
           } items-center justify-center sm:rounded-none rounded-t-3xl z-10`}
         >
-          <div className={`${formStep === 1 ? '-mt-96 sm:mt-0' : '-mt-96'}`}>
-            <Form formStep={formStep} onChange={handleStepChange} />
-          </div>
+          <Form formStep={formStep} onChange={handleStepChange} />
           <FormButton setFormStep={setFormStep} formStep={formStep} disabled={disabled} setDisabled={setDisabled} />
         </div>
       </div>

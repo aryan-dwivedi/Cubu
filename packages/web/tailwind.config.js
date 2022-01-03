@@ -5,9 +5,10 @@ module.exports = {
   theme: {
     extend: {
       height: () => ({
-        'screen/3': 'calc(100vh / 3)',
-        'screen/4': 'calc(100vh / 4)',
-        'screen/5': 'calc(100vh / 5)'
+        'screen/3': 'calc(100vh / 3)'
+      }),
+      width: () => ({
+        'screen/2': 'calc(100vw / 2)'
       }),
       borderWidth: {
         1: '1px'

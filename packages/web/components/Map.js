@@ -24,7 +24,7 @@ function Map({ listings }) {
 
   return (
     <ReactMapGL
-      mapStyle="mapbox://styles/mapbox/light-v10"
+      mapStyle="mapbox://styles/mapbox/navigation-day-v1"
       mapboxApiAccessToken={process.env.mapbox_key}
       {...viewport}
       onViewportChange={nextViewport => setViewport(nextViewport)}
