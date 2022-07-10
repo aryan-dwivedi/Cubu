@@ -35,7 +35,7 @@
     "react-native-gesture-handler": "~1.10.2",
     "react-native-google-places-autocomplete": "^2.4.1",
     "react-native-maps": "0.28.0",
-    "react-native-pager-view": "5.4.6",
+    "react-native-pager-view": "5.4.24",
     "react-native-reanimated": "^2.2.3",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.8.0",
