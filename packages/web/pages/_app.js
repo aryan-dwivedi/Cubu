@@ -4,7 +4,7 @@ import Router from 'next/router';
 import 'tailwindcss/tailwind.css';
 
 const client = new ApolloClient({
-  uri: process.env.API_URL || 'http://localhost:4000/graphql',
+  uri: process.env.API_URL || 'https://cubu-server-nm4j.onrender.com/graphql',
   credentials: 'include',
   cache: new InMemoryCache()
 });
