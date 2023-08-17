@@ -26,6 +26,8 @@
     "android": "lerna run --parallel --scope @cubu/app android",
     "server:test": "lerna run --parallel --scope @cubu/server test",
     "server:watch": "lerna run --parallel --scope @cubu/server watch",
+    "server:build": "lerna run --parallel --scope @cubu/server build",
+    "server:prod": "lerna run --parallel --scope @cubu/server prod",
     "server": "lerna run --parallel --scope @cubu/server start"
   },
   "dependencies": {
