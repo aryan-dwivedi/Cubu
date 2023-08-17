@@ -17,6 +17,7 @@ import { confirmEmail } from './routes/confirmEmail';
 import { createTestConn } from './tests/createTestConn';
 import { createTypeormConn } from './utils/createTypeormConn';
 import { genSchema } from './utils/genSchema';
+require('dotenv').config();
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const RedisStore = require('connect-redis')(session);
@@ -24,7 +25,15 @@ const RedisStore = require('connect-redis')(session);
 const startServer = async () => {
   const schema = genSchema() as any;
   const app = express();
-  const redis = new Redis(process.env.REDIS_URL);
+  const redis = new Redis({
+    host: process.env.REDIS_HOST,
+    port: !Number.isNaN(process.env.REDIS_PORT as any) ? Number(process.env.REDIS_PORT) : 6379,
+    username: process.env.REDIS_USERNAME,
+    password: process.env.REDIS_PASSWORD,
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
 
   if (process.env.NODE_ENV === 'test') {
     await redis.flushall();

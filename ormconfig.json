@@ -3,7 +3,24 @@
     "name": "production",
     "type": "postgres",
     "synchronize": true,
-    "logging": false
+    "logging": true,
+    "database": "cubu",
+    "username": "admin",
+    "password": "Y5jZ6h9RoBxpGLaTjMeLkebA0q3yZtjq",
+    "extra": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    },   
+    "entities": ["src/entities/**/*.ts"],
+    "migrations": ["src/migrations/**/*.ts"],
+    "subscribers": ["src/subscriber/**/*.ts"],
+    "cli": {
+      "entitiesDir": "src/entities",
+      "migrationsDir": "src/migrations",
+      "subscribersDir": "src/subscriber"
+    }
   },
   {
     "name": "development",
