@@ -1,4 +1,4 @@
-import argon2 from 'argon2';
+import bcrypt from 'bcrypt';
 import { FORGET_PASSWORD_PREFIX } from '../../../constants';
 import { User } from '../../../entities/User';
 import { ResolverMap } from '../../../types/graphql-utils';
@@ -39,7 +39,7 @@ export const resolvers: ResolverMap = {
         return formatYupError(err);
       }
 
-      const hashedPassword = await argon2.hash(newPassword);
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
 
       const updatePromise = User.update(
         { id: userId },

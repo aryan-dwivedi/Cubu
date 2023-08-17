@@ -1,4 +1,4 @@
-import argon2 from 'argon2';
+import bcrypt from 'bcrypt';
 import { USER_SESSION_PREFIX } from '../../../constants';
 import { User } from '../../../entities/User';
 import { ResolverMap } from '../../../types/graphql-utils';
@@ -42,7 +42,7 @@ export const resolvers: ResolverMap = {
         };
       }
 
-      const valid = await argon2.verify(user.password, password);
+      const valid = await bcrypt.compare(password, user.password);
 
       if (!valid) {
         return { errors: errorResponse };

@@ -3,15 +3,24 @@ import * as nodemailer from 'nodemailer';
 
 export const sendEmail = async (recipient: string, url: string, linkText: string) => {
   const transporter = nodemailer.createTransport({
-    host: 'smtp.mailtrap.io',
-    port: 2525,
+    host: process.env.SMTP_HOST ?? 'smtp.mailtrap.io',
+    port: !Number.isNaN(Number(process.env.SMTP_PORT)) ? Number(process.env.SMTP_PORT) : 2525,
     auth: {
-      user: '1573dcc9912d13',
-      pass: 'aed702a0ed0076'
+      user: process.env.SMTP_USER ?? 'a0e2b0b0b0b0b0',
+      pass: process.env.SMTP_PASS ?? 'a0e2b0b0b0b0b0'
     }
   });
+  console.log(
+    'Message INFO: ',
+    `
+  host: ${process.env.SMTP_HOST ?? 'smtp.mailtrap.io'}
+  port: ${Number(process.env.SMTP_PORT) ?? 2525}
+  user: ${process.env.SMTP_USER ?? 'a0e2b0b0b0b0b0'}
+  pass: ${process.env.SMTP_PASS ?? 'a0e2b0b0b0b0b0'}
+  `
+  );
   const message = {
-    from: 'Sender Name <sender@example.com>',
+    from: 'Sender Name <aryandwivd@gmail.com>', // Sender address
     to: `Recipient <${recipient}>`,
     subject: `${linkText}`,
     text: 'Hello to myself!',
@@ -223,11 +232,9 @@ export const sendEmail = async (recipient: string, url: string, linkText: string
       </body>` // plaintext body
   };
 
-  transporter.sendMail(message, (err, info) => {
+  transporter.sendMail(message, err => {
     if (err) {
       console.log('Error occurred. ' + err.message);
     }
-    console.log(linkText, recipient, url);
-    console.log('Message sent: %s', info.messageId);
   });
 };

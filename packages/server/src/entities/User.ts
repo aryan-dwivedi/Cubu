@@ -1,4 +1,4 @@
-import argon2 from 'argon2';
+import bcrypt from 'bcrypt';
 import { BaseEntity, BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Listing } from './Listing';
 
@@ -25,6 +25,6 @@ export class User extends BaseEntity {
 
   @BeforeInsert()
   async hashPasswordBeforeInsert() {
-    this.password = await argon2.hash(this.password);
+    this.password = await bcrypt.hash(this.password, 10);
   }
 }
