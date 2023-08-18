@@ -3,8 +3,10 @@ import ProgressBar from '@badrap/bar-of-progress';
 import Router from 'next/router';
 import 'tailwindcss/tailwind.css';
 
+require('dotenv').config();
+
 const client = new ApolloClient({
-  uri: process.env.API_URL || 'https://cubu-server-m8yi.onrender.com/graphql',
+  uri: process.env.NODE_ENV === 'production' ? process.env.API_URL + '/graphql' : 'http://localhost:4000/graphql',
   credentials: 'include',
   cache: new InMemoryCache()
 });

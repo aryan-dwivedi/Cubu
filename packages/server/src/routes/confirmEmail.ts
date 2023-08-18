@@ -5,8 +5,17 @@ import { User } from '../entities/User';
 
 export const confirmEmail = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const redis = new Redis(process.env.REDIS_URL);
+  const redis = new Redis({
+    host: process.env.REDIS_HOST,
+    port: !Number.isNaN(process.env.REDIS_PORT as any) ? Number(process.env.REDIS_PORT) : 6379,
+    username: process.env.REDIS_USERNAME,
+    password: process.env.REDIS_PASSWORD,
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
   const userId = await redis.get(id);
+  console.log(userId, '------------------userId------------------');
   if (userId) {
     await User.update({ id: userId }, { confirmed: true });
     await redis.del(id);

@@ -3,22 +3,14 @@ import * as nodemailer from 'nodemailer';
 
 export const sendEmail = async (recipient: string, url: string, linkText: string) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST ?? 'smtp.mailtrap.io',
+    host: process.env.SMTP_HOST,
     port: !Number.isNaN(Number(process.env.SMTP_PORT)) ? Number(process.env.SMTP_PORT) : 2525,
     auth: {
-      user: process.env.SMTP_USER ?? 'a0e2b0b0b0b0b0',
-      pass: process.env.SMTP_PASS ?? 'a0e2b0b0b0b0b0'
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     }
   });
-  console.log(
-    'Message INFO: ',
-    `
-  host: ${process.env.SMTP_HOST ?? 'smtp.mailtrap.io'}
-  port: ${Number(process.env.SMTP_PORT) ?? 2525}
-  user: ${process.env.SMTP_USER ?? 'a0e2b0b0b0b0b0'}
-  pass: ${process.env.SMTP_PASS ?? 'a0e2b0b0b0b0b0'}
-  `
-  );
+
   const message = {
     from: 'Sender Name <aryandwivd@gmail.com>', // Sender address
     to: `Recipient <${recipient}>`,
