@@ -51,7 +51,7 @@
     "graphql-request": "^3.5.0",
     "ioredis": "^4.17.3",
     "merge-graphql-schemas": "^1.7.8",
-    "nodemailer": "^6.6.3",
+    "nodemailer": "^6.9.9",
     "pg": "^8.7.1",
     "rate-limit-redis": "^2.1.0",
     "request-promise": "^4.2.6",
