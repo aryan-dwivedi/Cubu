@@ -55,7 +55,7 @@
     "pg": "^8.7.1",
     "rate-limit-redis": "^2.1.0",
     "request-promise": "^4.2.6",
-    "shortid": "^2.2.16",
+    "shortid": "^2.2.17",
     "subscriptions-transport-ws": "^0.9.19",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.2.37",
