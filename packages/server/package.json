@@ -37,7 +37,7 @@
     "@graphql-tools/schema": "^8.3.0",
     "@types/node": "^16.11.4",
     "apollo-server-express": "^3.1.2",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "connect-redis": "^6.0.0",
     "dataloader": "^1.4.0",
     "dotenv": "^16.3.1",
@@ -58,7 +58,7 @@
     "shortid": "^2.2.16",
     "subscriptions-transport-ws": "^0.9.19",
     "type-graphql": "^1.1.1",
-    "typeorm": "^0.2.37",
+    "typeorm": "^0.3.18",
     "uuid": "^8.3.2",
     "yup": "^0.32.11"
   },
